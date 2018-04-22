@@ -1,0 +1,208 @@
+A51 MACRO ASSEMBLER  TAREFA_2_SCRIP                                                       04/18/2018 09:06:55 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Tarefa_2_scrip.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Pratica5\Tarefa_2_scrip.a51 SET(SMALL) DEBUG PRINT(.\Listings\Tarefa_2_
+                      scrip.lst) OBJECT(.\Objects\Tarefa_2_scrip.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00A7                 1     en    EQU       P2.7   ;P3.5 enable display
+  00A5                 2     rs    EQU       P2.5    ;P3.4 alterna entre comando e dado (0-comando 1-dado) 
+  00A6                 3     rw        EQU           P2.6
+  0080                 4     dado  EQU               P0
+  0500                 5     temp  EQU       0500h
+                       6     
+0000                   7     ORG 00h
+0000 8031              8                 jmp inicio
+                       9     
+                      10            ; ORG 2003h ;int0/
+                      11                      ; reti
+                      12     
+                      13            ; ORG 0Bh ;timer0
+                      14            ; reti
+                      15     
+                      16            ; ORG 13h ;int1/
+                      17            ; reti
+                      18     
+                      19            ; ORG 1Bh ;timer1
+                      20            ; reti
+                      21     
+                      22            ; ORG 23h ;serial
+                      23            ; reti
+                      24             
+0033                  25     ORG 33h
+                      26     
+0033                  27     inicio: 
+0033 1149             28                     call inidisp
+                      29             ;call pisca_c
+                      30             ;acall temp
+0035 1187             31                     call escrevemsg
+0037 80FE             32                     jmp $
+                      33     
+                      34     
+                      35     
+                      36             
+                      37      ;Inicializacao do display
+                      38     ;------------------------------------------------------------------------;
+                      39     ;Rotina que inicializa o display para o uso                              ;
+                      40     ;nao tem dados de entrada e nao devolve nada                             ;
+                      41     ;------------------------------------------------------------------------;
+0039                  42     pisca_c:
+0039 75800E           43                     MOV dado,#0eh
+003C 117A             44                     CALL comdisp
+003E B100             45                     call temp
+0040 75800C           46                     MOV dado,#0ch
+0043 117A             47                     CALL comdisp
+0045 B100             48                     call temp
+0047 80F0             49                     jmp pisca_c
+                      50     
+0049 758038           51     inidisp:    mov dado,#38h
+                      52                             ;mov dado,#3ch
+004C 117A             53                 CALL comdisp
+004E 711A             54                             call delay2
+0050 758038           55                             mov dado,#38h
+                      56                             ;mov dado,#3ch
+0053 117A             57                 CALL comdisp
+A51 MACRO ASSEMBLER  TAREFA_2_SCRIP                                                       04/18/2018 09:06:55 PAGE     2
+
+0055 711A             58                             call delay2
+0057 758006           59                                     MOV dado,#06h
+005A 117A             60                 CALL comdisp
+005C 711A             61                                call delay2
+005E 75800E           62                                     MOV dado,#0eh
+0061 117A             63                 CALL comdisp
+0063 711A             64                                     call delay2
+0065 758001           65                             MOV dado,#01H
+0068 117A             66                             CALL comdisp
+006A 711A             67                             call delay2
+006C 22               68                 RET
+                      69     
+006D C2A7             70     dadodisp:   clr  en
+006F C2A6             71                             clr rw
+0071 D2A5             72                 setb rs
+0073 D2A7             73                 setb en
+0075 7111             74                 call delay
+0077 C2A7             75                 clr  en
+0079 22               76                 ret
+                      77     
+007A C2A7             78     comdisp:    clr  en
+007C C2A6             79                     clr rw
+007E C2A5             80                         clr  rs
+0080 D2A7             81                 setb en
+0082 7111             82                 call delay
+0084 C2A7             83                 clr  en
+0086 22               84                 ret
+                      85     
+                      86     
+                      87     
+0087 900300           88     escrevemsg:        mov  dptr, #mensagem  
+008A 7B10             89                    mov r3, #016d
+                      90                                ;clr r4              
+                      91                                
+008C E4               92     escrevemsg2:    clr a
+008D 93               93                                     movc  a,@a+dptr
+008E F580             94                                     mov dado,a
+0090 116D             95                                     call dadodisp
+0092 711A             96                                     call delay2
+0094 A3               97                                     inc dptr
+                      98                                     
+                      99                                     ;Para testar se jב chegou no fim da linha 1
+0095 1B              100                                     dec r3
+0096 EB              101                                     mov a, r3
+0097 6006            102                                     jz troca_linha ; se sim, vai pra linha 2
+0099                 103     volta_esc2:             
+                     104                                     ;Volta para a rotina normal de escrita
+                     105                                     
+0099 E4              106                                     clr a
+009A 93              107                                     movc  a,@a+dptr
+                     108                                     
+009B B400EE          109                                     cjne a, #00h, escrevemsg2
+009E 22              110                                     ret
+                     111     
+009F                 112     troca_linha:
+009F 7580C0          113                                 mov dado, #0c0h
+00A2 117A            114                                     CALL comdisp
+00A4 711A            115                                     call delay2
+00A6 80F1            116                                     jmp volta_esc2
+                     117                                
+                     118     
+                     119     
+0300                 120     org 300h
+                     121     ;mensagem:  DB 'UTFPR 2018 Lucas Guilherme', 0 
+0300 E0E1E9E8        122     mensagem: DB 'אביטח@#$%¨&*\(\)', 0 
+0304 E7402324                
+A51 MACRO ASSEMBLER  TAREFA_2_SCRIP                                                       04/18/2018 09:06:55 PAGE     3
+
+0308 25A8262A                
+030C 5C285C29                
+0310 00                      
+                     123     
+0311 780F            124     delay:      mov r0,#0FH
+0313 790F            125     loop:                   mov r1, #0FH
+0315 D9FE            126                                     djnz r1,$
+0317 D8FA            127                                djnz r0, loop
+0319 22              128                                ret
+                     129                                
+031A 78FF            130     delay2:      mov r0,#0FFH
+031C 79FF            131     loop2:          mov r1, #0FFH
+031E D9FE            132                                     djnz r1,$
+0320 D8FA            133                                djnz r0, loop2
+0322 22              134                                ret
+                     135                                
+                     136                                
+0500                 137     ORG 0500h
+                     138     
+0500 7D08            139     MOV R5, #8 ;1us
+0502                 140     DEL1:
+0502 7EC8            141         MOV R6, #200 ;1us
+0504                 142         DEL2:
+0504 7FF8            143             MOV R7, #248 ;1us
+0506                 144                 DEL3:
+0506 DFFE            145                 DJNZ R7, DEL3 ;2us
+0508 00              146                 NOP                ;1us
+0509 DEF9            147                 DJNZ R6, DEL2 ;2us 
+050B DDF5            148                 DJNZ R5, DEL1 ;2us
+050D 22              149     RET
+                     150     
+                     151     END
+                                                        
+A51 MACRO ASSEMBLER  TAREFA_2_SCRIP                                                       04/18/2018 09:06:55 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+COMDISP. . . . . .  C ADDR   007AH   A   
+DADO . . . . . . .  D ADDR   0080H   A   
+DADODISP . . . . .  C ADDR   006DH   A   
+DEL1 . . . . . . .  C ADDR   0502H   A   
+DEL2 . . . . . . .  C ADDR   0504H   A   
+DEL3 . . . . . . .  C ADDR   0506H   A   
+DELAY. . . . . . .  C ADDR   0311H   A   
+DELAY2 . . . . . .  C ADDR   031AH   A   
+EN . . . . . . . .  B ADDR   00A0H.7 A   
+ESCREVEMSG . . . .  C ADDR   0087H   A   
+ESCREVEMSG2. . . .  C ADDR   008CH   A   
+INICIO . . . . . .  C ADDR   0033H   A   
+INIDISP. . . . . .  C ADDR   0049H   A   
+LOOP . . . . . . .  C ADDR   0313H   A   
+LOOP2. . . . . . .  C ADDR   031CH   A   
+MENSAGEM . . . . .  C ADDR   0300H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PISCA_C. . . . . .  C ADDR   0039H   A   
+RS . . . . . . . .  B ADDR   00A0H.5 A   
+RW . . . . . . . .  B ADDR   00A0H.6 A   
+TEMP . . . . . . .  N NUMB   0500H   A   
+TROCA_LINHA. . . .  C ADDR   009FH   A   
+VOLTA_ESC2 . . . .  C ADDR   0099H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

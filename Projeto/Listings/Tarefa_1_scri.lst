@@ -1,0 +1,500 @@
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+NO OBJECT MODULE REQUESTED
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Pratica6 -lab0\Tarefa_1_scri.a51 SET(SMALL) DEBUG PRINT(.\Listings\Tare
+                      fa_1_scri.lst) OBJECT(.\Objects\Tarefa_1_scri.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 00h
+0000 802E              2     jmp 030h
+                       3     
+                       4     ;Inicio P0
+  0080                 5     dado  EQU               P0
+                       6     ;Fim p0
+                       7     ;Inicio P2
+  00A5                 8     rs    EQU       P2.5    ;P3.4 alterna entre comando e dado (0-comando 1-dado) 
+  00A6                 9     rw        EQU           P2.6
+  00A7                10     en    EQU       P2.7    ;P3.5 enable display
+  0500                11     temp  EQU       0500h
+                      12     ;Fim P2
+                      13     ;Inicio P3
+  00B0                14     lin1  EQU               P3.0
+  00B1                15     lin2  EQU               P3.1
+  00B2                16     lin3  EQU               P3.2
+  00B3                17     lin4  EQU               P3.3
+  00B4                18     col1  EQU               P3.4
+  00B5                19     col2  EQU               P3.5
+  00B6                20     col3  EQU               P3.6
+  00B7                21     col4  EQU               P3.7
+                      22     ;Fim P3
+                      23     ;Inicio RAM
+  007F                24     var1    EQU             07FH
+  007E                25     var2    EQU             07eH
+  007D                26     var3    EQU             07DH
+  007C                27     var4    EQU             07CH
+  007B                28     var5    EQU             07BH
+  007A                29     var6    EQU             07AH
+  0079                30     var7    EQU             079H
+  0078                31     var8    EQU             078H
+  0077                32     var9    EQU             077H
+                      33     
+                      34     
+0030                  35     ORG 030h
+                      36     
+0030 757F00           37     MOV var1, #0d
+0033 757E00           38     MOV var2, #0d
+0036 757D00           39     MOV var3, #0d
+0039 757C00           40     MOV var4, #0d
+003C 757B00           41     MOV var5, #0d
+003F 757A00           42     MOV var6, #0d
+0042 757900           43     MOV var7, #0d
+0045 757800           44     MOV var8, #0d
+0048 757700           45     MOV var9, #0d
+                      46     
+004B 310C             47     acall inidisp
+004D 314A             48     acall msg_aguardando1
+004F 3169             49     acall troca_para_L2
+0051 3152             50     acall msg_aguardando2
+                      51     
+0053 75B0FF           52     mov P3, #11111111b
+                      53     
+0056                  54     lin_check:  
+0056 75B00F           55                 mov P3, #00001111b
+0059 30B00B           56                             jnb lin1, L1_C_check
+005C 30B116           57                             jnb lin2, L2_C_check
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     2
+
+005F 30B221           58                             jnb lin3, L3_C_check
+0062 30B32C           59                             jnb lin4, L4_C_check
+0065 80EF             60                             jmp lin_check
+                      61                             
+0067                  62     L1_C_check:  
+0067 75B0F0           63                 mov P3, #11110000b
+006A 30B429           64                             jnb col1, bot_1
+006D 30B58C           65                             jnb col2, bot_2
+*** ___________________________________________________________^
+*** ERROR #A51 IN 65 (Pratica6 -lab0\Tarefa_1_scri.a51, LINE 65): TARGET OUT OF RANGE
+0070 30B689           66                             jnb col3, bot_3
+*** ___________________________________________________________^
+*** ERROR #A51 IN 66 (Pratica6 -lab0\Tarefa_1_scri.a51, LINE 66): TARGET OUT OF RANGE
+                      67                             ;jnb col4, bot_A
+0073 80F2             68                             jmp L1_C_check
+                      69     
+0075                  70     L2_C_check:  
+0075 75B0F0           71                 mov P3, #11110000b
+0078 30B481           72                             jnb col1, bot_4
+*** ___________________________________________________________^
+*** ERROR #A51 IN 72 (Pratica6 -lab0\Tarefa_1_scri.a51, LINE 72): TARGET OUT OF RANGE
+007B 30B57E           73                             jnb col2, bot_5
+007E 30B67B           74                             jnb col3, bot_6
+                      75                             ;jnb col4, bot_B
+0081 80F2             76                             jmp L2_C_check
+                      77                             
+0083                  78     L3_C_check:  
+0083 75B0F0           79                 mov P3, #11110000b
+0086 30B473           80                             jnb col1, bot_7
+0089 30B570           81                             jnb col2, bot_8
+008C 30B66D           82                             jnb col3, bot_9
+                      83                             ;jnb col4, bot_C
+008F 80F2             84                             jmp L3_C_check
+                      85                             
+0091                  86     L4_C_check:  
+0091 75B0F0           87                 mov P3, #11110000b
+                      88                             ;jnb col1, bot_ASC
+                      89                             ;jnb col2, bot_0
+                      90                             ;jnb col3, bot_HASH
+                      91                             ;jnb col4, bot_D
+0094 80FB             92                             jmp L4_C_check
+                      93             
+0096                  94     bot_1:
+0096                  95             cjne var1, #10, show1
+*** ______________________________________^
+*** ERROR #A39 IN 95 (Pratica6 -lab0\Tarefa_1_scri.a51, LINE 95): REGISTER OPERAND EXPECTED
+0096 757F00           96             mov var1,#0
+0099 D2A0             97             setb P2.0
+009B                  98             acall delay_2
+*** _______________________________________^
+*** ERROR #A45 IN 98 (Pratica6 -lab0\Tarefa_1_scri.a51, LINE 98): UNDEFINED SYMBOL (PASS-2)
+009D C2A0             99             clr P2.0
+009F 1156            100             acall lin_check
+00A1                 101     show1:  
+00A1 310C            102             acall inidisp
+                     103             ;Escreve linha 1
+00A3 900919          104             mov  dptr, #msg_1_L1
+00A6 7C10            105         mov r4, #016d
+00A8 315A            106             acall msg
+                     107             ;Troca Linha
+00AA 3169            108             acall troca_para_L2
+                     109             ;Escreve Comeco da linha 2
+00AC 90098E          110             mov  dptr, #msg_1_L2
+00AF 7C10            111             mov r4, #016d
+00B1 315A            112             acall msg
+                     113             
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     3
+
+00B3 857FF0          114             mov B, var1
+00B6 7401            115             mov A, #01d
+00B8 A4              116             mul AB
+                     117             
+00B9 75F00A          118             mov B,#10
+00BC 84              119             div AB
+                     120             
+00BD FA              121             mov R2, A
+00BE ABF0            122             mov R3, B
+                     123             
+00C0 E57F            124             mov A,var1
+00C2 75F00A          125             mov B,#10
+00C5 84              126             div AB
+                     127             
+00C6 F8              128             mov R0,A
+00C7 A9F0            129             mov R1,B
+                     130             
+00C9 E8              131             mov A,R0
+00CA 2430            132             add A,#30h
+00CC F8              133             mov R0,A
+                     134             
+00CD E9              135             mov A,R1
+00CE 2430            136             add A,#30h
+00D0 F9              137             mov R1,A
+                     138             
+00D1 EA              139             mov A,R2
+00D2 2430            140             add A,#30h
+00D4 FA              141             mov R2,A
+                     142             
+00D5 EB              143             mov A,R3
+00D6 2430            144             add A,#30h
+00D8 FB              145             mov R3,A
+                     146             
+00D9 8880            147             mov dado, R0
+00DB 3130            148             aCALL dadodisp
+00DD F109            149             acall delay2
+                     150             
+00DF 8980            151             mov dado, R1
+00E1 3130            152             aCALL dadodisp
+00E3 F109            153             acall delay2
+                     154             
+00E5 75803D          155             mov dado, #3dh
+00E8 3130            156             aCALL dadodisp
+00EA F109            157             acall delay2
+                     158             
+00EC 8A80            159             mov dado, R2
+00EE 3130            160             aCALL dadodisp
+00F0 F109            161             acall delay2
+                     162             
+00F2 8B80            163             mov dado, R3
+00F4 3130            164             aCALL dadodisp
+00F6 F109            165             acall delay2
+                     166             
+                     167             
+                     168             
+00F8 057F            169             inc var1
+00FA 1156            170             acall lin_check
+                     171             
+00FC                 172     bot_2:
+00FC                 173     bot_3:
+00FC                 174     bot_A:
+00FC                 175     bot_4:
+00FC                 176     bot_5:
+00FC                 177     bot_6:
+00FC                 178     bot_B:
+00FC                 179     bot_7:
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     4
+
+00FC                 180     bot_8:
+00FC                 181     bot_9:
+00FC                 182     bot_C:
+00FC                 183     bot_AST:
+00FC                 184     bot_0:
+00FC                 185     bot_HASH:
+00FC                 186     bot_D:
+                     187     
+                     188             
+                     189      ;Inicializacao do display
+                     190     ;------------------------------------------------------------------------;
+                     191     ;Rotina que inicializa o display para o uso                              ;
+                     192     ;nao tem dados de entrada e nao devolve nada                             ;
+                     193     ;------------------------------------------------------------------------;
+00FC                 194     pisca_cursor:
+00FC 75800E          195                     MOV dado,#0eh
+00FF 313D            196                     CALL comdisp
+0101 B100            197                     call temp
+0103 75800C          198                     MOV dado,#0ch
+0106 313D            199                     CALL comdisp
+0108 B100            200                     call temp
+010A 80F0            201                     jmp pisca_cursor
+                     202     
+010C 758038          203     inidisp:    mov dado,#38h
+                     204                             ;mov dado,#3ch
+010F 313D            205                 CALL comdisp
+0111 F109            206                             call delay2
+0113 758038          207                             mov dado,#38h
+                     208                             ;mov dado,#3ch
+0116 313D            209                 CALL comdisp
+0118 F109            210                             call delay2
+011A 758006          211                                     MOV dado,#06h
+011D 313D            212                 CALL comdisp
+011F F109            213                                call delay2
+0121 75800E          214                                     MOV dado,#0eh
+0124 313D            215                 CALL comdisp
+0126 F109            216                                     call delay2
+0128 758001          217                             MOV dado,#01H
+012B 313D            218                             CALL comdisp
+012D F109            219                             call delay2
+012F 22              220                 RET
+                     221     
+0130 C2A7            222     dadodisp:   clr  en
+0132 C2A6            223                             clr rw
+0134 D2A5            224                 setb rs
+0136 D2A7            225                 setb en
+0138 F100            226                 call delay
+013A C2A7            227                 clr  en
+013C 22              228                 ret
+                     229     
+013D C2A7            230     comdisp:    clr  en
+013F C2A6            231                     clr rw
+0141 C2A5            232                         clr  rs
+0143 D2A7            233                 setb en
+0145 F100            234                 call delay
+0147 C2A7            235                 clr  en
+0149 22              236                 ret
+                     237     
+                     238     
+014A                 239     msg_aguardando1:
+014A 900900          240                             mov  dptr, #mensagem_aguardando_L1
+014D 7C10            241                 mov r4, #016d
+014F 8009            242                             jmp msg
+0151 22              243                             ret
+                     244                             
+0152                 245     msg_aguardando2:
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     5
+
+0152 900908          246                             mov  dptr, #mensagem_aguardando_L2
+0155 7C10            247                 mov r4, #016d
+0157 8001            248                             jmp msg
+0159 22              249                             ret
+                     250                             
+                     251                                
+015A E4              252     msg:                    clr a
+015B 93              253                                     movc  a,@a+dptr
+015C F580            254                                     mov dado,a
+015E 3130            255                                     call dadodisp
+0160 F109            256                                     call delay2
+0162 A3              257                                     inc dptr
+0163 E4              258                                     clr a
+0164 93              259                                     movc  a,@a+dptr
+                     260                                     
+0165 B400F2          261                                     cjne a, #00h, msg
+0168 22              262                                     ret
+                     263                                     
+                     264                                     
+                     265     
+0169                 266     troca_para_L2:
+0169 7580C0          267                                 mov dado, #0c0h
+016C 313D            268                                     aCALL comdisp
+016E F109            269                                     acall delay2
+0170 22              270                                 ret
+                     271     
+0700                 272     ORG 0700h
+                     273     
+                     274     
+0700 7E0F            275     delay:      mov r6,#0FH
+0702 7F0F            276     loop:                   mov r7, #0FH
+0704 DFFE            277                                     djnz r7,$
+0706 DEFA            278                                djnz r6, loop
+0708 22              279                                ret
+                     280                                
+0709 7EFF            281     delay2:      mov r6,#0FFH
+070B 7FFF            282     loop2:          mov r7, #0FFH
+070D DFFE            283                                     djnz r7,$
+070F DEFA            284                                djnz r6, loop2
+0711 22              285                                ret
+                     286     
+0712                 287     debounce:
+0712 7D05            288     MOV R5, #5 ;1us
+0714                 289     DELl1:
+0714 7EC8            290         MOV R6, #200 ;1us
+0716                 291         DELl2:
+0716 7FF8            292             MOV R7, #248 ;1us
+0718                 293                 DELl3:
+0718 DFFE            294                 DJNZ R7, DELl3 ;2us
+071A 00              295                 NOP                ;1us
+071B DEF9            296                 DJNZ R6, DELl2 ;2us 
+071D DDF5            297                 DJNZ R5, DELl1 ;2us
+071F 22              298                             RET
+                     299     
+0720 7D08            300     MOV R5, #8 ;1us
+0722                 301     DEL1:
+0722 7EC8            302         MOV R6, #200 ;1us
+0724                 303         DEL2:
+0724 7FF8            304             MOV R7, #248 ;1us
+0726                 305                 DEL3:
+0726 DFFE            306                 DJNZ R7, DEL3 ;2us
+0728 00              307                 NOP                ;1us
+0729 DEF9            308                 DJNZ R6, DEL2 ;2us 
+072B DDF5            309                 DJNZ R5, DEL1 ;2us
+072D 22              310     RET
+0900                 311     org 0900h
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     6
+
+0900 426F6D20        312     mensagem_aguardando_L1: DB "Bom dia",0
+0904 64696100                
+0908 41706572        313     mensagem_aguardando_L2: DB "Aperte uma tecla",0 
+090C 74652075                
+0910 6D612074                
+0914 65636C61                
+0918 00                      
+0919 54616275        314     msg_1_L1: DB "Tabuada do 1",0
+091D 61646120                
+0921 646F2031                
+0925 00                      
+0926 54616275        315     msg_2_L1: DB "Tabuada do 2",0
+092A 61646120                
+092E 646F2032                
+0932 00                      
+0933 54616275        316     msg_3_L1: DB "Tabuada do 3",0
+0937 61646120                
+093B 646F2033                
+093F 00                      
+0940 54616275        317     msg_4_L1: DB "Tabuada do 4",0
+0944 61646120                
+0948 646F2034                
+094C 00                      
+094D 54616275        318     msg_5_L1: DB "Tabuada do 5",0
+0951 61646120                
+0955 646F2035                
+0959 00                      
+095A 54616275        319     msg_6_L1: DB "Tabuada do 6",0
+095E 61646120                
+0962 646F2036                
+0966 00                      
+0967 54616275        320     msg_7_L1: DB "Tabuada do 7",0
+096B 61646120                
+096F 646F2037                
+0973 00                      
+0974 54616275        321     msg_8_L1: DB "Tabuada do 8",0
+0978 61646120                
+097C 646F2038                
+0980 00                      
+0981 54616275        322     msg_9_L1: DB "Tabuada do 9",0
+0985 61646120                
+0989 646F2039                
+098D 00                      
+098E 317800          323     msg_1_L2: DB "1x",0
+0991 327800          324     msg_2_L2: DB "2x",0
+0994 337800          325     msg_3_L2: DB "3x",0
+0997 347800          326     msg_4_L2: DB "4x",0
+099A 357800          327     msg_5_L2: DB "5x",0
+099D 367800          328     msg_6_L2: DB "6x",0
+09A0 377800          329     msg_7_L2: DB "7x",0
+09A3 387800          330     msg_8_L2: DB "8x",0
+09A6 397800          331     msg_9_L2: DB "9x",0
+                     332             
+                     333     END
+                                                        
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     7
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                 T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . . . .  D ADDR   00F0H   A   
+BOT_0. . . . . . . . .  C ADDR   00FCH   A   
+BOT_1. . . . . . . . .  C ADDR   0096H   A   
+BOT_2. . . . . . . . .  C ADDR   00FCH   A   
+BOT_3. . . . . . . . .  C ADDR   00FCH   A   
+BOT_4. . . . . . . . .  C ADDR   00FCH   A   
+BOT_5. . . . . . . . .  C ADDR   00FCH   A   
+BOT_6. . . . . . . . .  C ADDR   00FCH   A   
+BOT_7. . . . . . . . .  C ADDR   00FCH   A   
+BOT_8. . . . . . . . .  C ADDR   00FCH   A   
+BOT_9. . . . . . . . .  C ADDR   00FCH   A   
+BOT_A. . . . . . . . .  C ADDR   00FCH   A   
+BOT_AST. . . . . . . .  C ADDR   00FCH   A   
+BOT_B. . . . . . . . .  C ADDR   00FCH   A   
+BOT_C. . . . . . . . .  C ADDR   00FCH   A   
+BOT_D. . . . . . . . .  C ADDR   00FCH   A   
+BOT_HASH . . . . . . .  C ADDR   00FCH   A   
+COL1 . . . . . . . . .  B ADDR   00B0H.4 A   
+COL2 . . . . . . . . .  B ADDR   00B0H.5 A   
+COL3 . . . . . . . . .  B ADDR   00B0H.6 A   
+COL4 . . . . . . . . .  B ADDR   00B0H.7 A   
+COMDISP. . . . . . . .  C ADDR   013DH   A   
+DADO . . . . . . . . .  D ADDR   0080H   A   
+DADODISP . . . . . . .  C ADDR   0130H   A   
+DEBOUNCE . . . . . . .  C ADDR   0712H   A   
+DEL1 . . . . . . . . .  C ADDR   0722H   A   
+DEL2 . . . . . . . . .  C ADDR   0724H   A   
+DEL3 . . . . . . . . .  C ADDR   0726H   A   
+DELAY. . . . . . . . .  C ADDR   0700H   A   
+DELAY2 . . . . . . . .  C ADDR   0709H   A   
+DELAY_2. . . . . . . .    ----   -----       
+DELL1. . . . . . . . .  C ADDR   0714H   A   
+DELL2. . . . . . . . .  C ADDR   0716H   A   
+DELL3. . . . . . . . .  C ADDR   0718H   A   
+EN . . . . . . . . . .  B ADDR   00A0H.7 A   
+INIDISP. . . . . . . .  C ADDR   010CH   A   
+L1_C_CHECK . . . . . .  C ADDR   0067H   A   
+L2_C_CHECK . . . . . .  C ADDR   0075H   A   
+L3_C_CHECK . . . . . .  C ADDR   0083H   A   
+L4_C_CHECK . . . . . .  C ADDR   0091H   A   
+LIN1 . . . . . . . . .  B ADDR   00B0H.0 A   
+LIN2 . . . . . . . . .  B ADDR   00B0H.1 A   
+LIN3 . . . . . . . . .  B ADDR   00B0H.2 A   
+LIN4 . . . . . . . . .  B ADDR   00B0H.3 A   
+LIN_CHECK. . . . . . .  C ADDR   0056H   A   
+LOOP . . . . . . . . .  C ADDR   0702H   A   
+LOOP2. . . . . . . . .  C ADDR   070BH   A   
+MENSAGEM_AGUARDANDO_L1  C ADDR   0900H   A   
+MENSAGEM_AGUARDANDO_L2  C ADDR   0908H   A   
+MSG. . . . . . . . . .  C ADDR   015AH   A   
+MSG_1_L1 . . . . . . .  C ADDR   0919H   A   
+MSG_1_L2 . . . . . . .  C ADDR   098EH   A   
+MSG_2_L1 . . . . . . .  C ADDR   0926H   A   
+MSG_2_L2 . . . . . . .  C ADDR   0991H   A   
+MSG_3_L1 . . . . . . .  C ADDR   0933H   A   
+MSG_3_L2 . . . . . . .  C ADDR   0994H   A   
+MSG_4_L1 . . . . . . .  C ADDR   0940H   A   
+MSG_4_L2 . . . . . . .  C ADDR   0997H   A   
+MSG_5_L1 . . . . . . .  C ADDR   094DH   A   
+MSG_5_L2 . . . . . . .  C ADDR   099AH   A   
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     8
+
+MSG_6_L1 . . . . . . .  C ADDR   095AH   A   
+MSG_6_L2 . . . . . . .  C ADDR   099DH   A   
+MSG_7_L1 . . . . . . .  C ADDR   0967H   A   
+MSG_7_L2 . . . . . . .  C ADDR   09A0H   A   
+MSG_8_L1 . . . . . . .  C ADDR   0974H   A   
+MSG_8_L2 . . . . . . .  C ADDR   09A3H   A   
+MSG_9_L1 . . . . . . .  C ADDR   0981H   A   
+MSG_9_L2 . . . . . . .  C ADDR   09A6H   A   
+MSG_AGUARDANDO1. . . .  C ADDR   014AH   A   
+MSG_AGUARDANDO2. . . .  C ADDR   0152H   A   
+P0 . . . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . . . .  D ADDR   00B0H   A   
+PISCA_CURSOR . . . . .  C ADDR   00FCH   A   
+RS . . . . . . . . . .  B ADDR   00A0H.5 A   
+RW . . . . . . . . . .  B ADDR   00A0H.6 A   
+SHOW1. . . . . . . . .  C ADDR   00A1H   A   
+TEMP . . . . . . . . .  N NUMB   0500H   A   
+TROCA_PARA_L2. . . . .  C ADDR   0169H   A   
+VAR1 . . . . . . . . .  N NUMB   007FH   A   
+VAR2 . . . . . . . . .  N NUMB   007EH   A   
+VAR3 . . . . . . . . .  N NUMB   007DH   A   
+VAR4 . . . . . . . . .  N NUMB   007CH   A   
+VAR5 . . . . . . . . .  N NUMB   007BH   A   
+VAR6 . . . . . . . . .  N NUMB   007AH   A   
+VAR7 . . . . . . . . .  N NUMB   0079H   A   
+VAR8 . . . . . . . . .  N NUMB   0078H   A   
+VAR9 . . . . . . . . .  N NUMB   0077H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 5 ERROR(S)

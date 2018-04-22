@@ -1,0 +1,43 @@
+A51 MACRO ASSEMBLER  TEMPORIZADOR                                                         04/11/2018 07:57:06 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\temporizador.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Pratica4\temporizador.a51 SET(SMALL) DEBUG PRINT(.\Listings\temporizado
+                      r.lst) OBJECT(.\Objects\temporizador.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0200                   1     ORG 0200h
+                       2     
+0200 7D14              3         MOV R5, #20 ;1us
+                       4     
+0202                   5     DELAY1:
+0202 7EC8              6         MOV R6, #200 ;1us
+0204                   7         DELAY2:
+0204 7FF8              8             MOV R7, #248 ;1us
+0206                   9                 DELAY3:
+0206 DFFE             10                 DJNZ R7, DELAY3 ;2us
+0208 00               11                 NOP                ;1us
+0209 DEF9             12                 DJNZ R6, DELAY2 ;2us 
+020B DDF5             13                 DJNZ R5, DELAY1 ;2us
+                      14     
+020D 22               15     RET
+                      16     END
+A51 MACRO ASSEMBLER  TEMPORIZADOR                                                         04/11/2018 07:57:06 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY1 . . . . . .  C ADDR   0202H   A   
+DELAY2 . . . . . .  C ADDR   0204H   A   
+DELAY3 . . . . . .  C ADDR   0206H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

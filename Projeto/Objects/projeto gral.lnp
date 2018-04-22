@@ -1,0 +1,3 @@
+".\Objects\Tarefa_2_scrip.obj" 
+TO ".\Objects\projeto gral" 
+PRINT(".\Listings\projeto gral.m51") RAMSIZE(256) 

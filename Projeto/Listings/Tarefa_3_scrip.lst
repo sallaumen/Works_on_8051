@@ -1,0 +1,266 @@
+A51 MACRO ASSEMBLER  TAREFA_3_SCRIP                                                       04/18/2018 11:01:19 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Tarefa_3_scrip.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Pratica5\Tarefa_3_scrip.a51 SET(SMALL) DEBUG PRINT(.\Listings\Tarefa_3_
+                      scrip.lst) OBJECT(.\Objects\Tarefa_3_scrip.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00A7                 1     en    EQU       P2.7   ;P3.5 enable display
+  00A5                 2     rs    EQU       P2.5    ;P3.4 alterna entre comando e dado (0-comando 1-dado) 
+  00A6                 3     rw        EQU           P2.6
+  0080                 4     dado  EQU               P0
+  0500                 5     temp  EQU       0500h
+                       6     
+  00B0                 7     lin1  EQU               P3.0
+  00B1                 8     lin2  EQU               P3.1
+  00B2                 9     lin3  EQU               P3.2
+  00B3                10     lin4  EQU               P3.3
+                      11             
+  00B4                12     col1  EQU               P3.4
+  00B5                13     col2  EQU               P3.5
+  00B6                14     col3  EQU               P3.6
+  00B7                15     col4  EQU               P3.7
+                      16     
+0030                  17     ORG 030h
+0030 1164             18     call inidisp
+0032 11A9             19     call escrevemsg
+0034 75B0FF           20     mov P3, #11111111b
+                      21     
+0037                  22     lin_func:  
+0037 75B00F           23                 mov P3, #00001111b
+                      24                             ;acall debounce
+003A 30B002           25                             jnb lin1, col_func
+                      26                             ;jnb lin2, col_func
+003D 80F8             27                             jmp lin_func
+                      28                             
+003F                  29     col_func:  
+                      30                             ;acall debounce
+003F 75B0F0           31                 mov P3, #11110000b
+0042 30B409           32                 jnb col1, inicio
+                      33                             ;jmp col2, função2
+0045 80F8             34                             jmp col_func
+0047                  35     loop_debounce:
+0047 7145             36                 acall debounce
+0049 20B002           37                             jb lin1, inicio
+004C 80F9             38                             jmp loop_debounce
+                      39     
+004E                  40     inicio: 
+004E 1164             41                     call inidisp
+                      42             ;call pisca_c
+                      43             ;acall temp
+0050 11A2             44                     call escrevemsg2019
+                      45                     ;jmp 030h
+                      46                     
+0052 80FE             47                     jmp $
+                      48     
+                      49     
+                      50     
+                      51             
+                      52      ;Inicializacao do display
+                      53     ;------------------------------------------------------------------------;
+                      54     ;Rotina que inicializa o display para o uso                              ;
+                      55     ;nao tem dados de entrada e nao devolve nada                             ;
+                      56     ;------------------------------------------------------------------------;
+0054                  57     pisca_c:
+A51 MACRO ASSEMBLER  TAREFA_3_SCRIP                                                       04/18/2018 11:01:19 PAGE     2
+
+0054 75800E           58                     MOV dado,#0eh
+0057 1195             59                     CALL comdisp
+0059 B100             60                     call temp
+005B 75800C           61                     MOV dado,#0ch
+005E 1195             62                     CALL comdisp
+0060 B100             63                     call temp
+0062 80F0             64                     jmp pisca_c
+                      65     
+0064 758038           66     inidisp:    mov dado,#38h
+                      67                             ;mov dado,#3ch
+0067 1195             68                 CALL comdisp
+0069 713C             69                             call delay2
+006B 758038           70                             mov dado,#38h
+                      71                             ;mov dado,#3ch
+006E 1195             72                 CALL comdisp
+0070 713C             73                             call delay2
+0072 758006           74                                     MOV dado,#06h
+0075 1195             75                 CALL comdisp
+0077 713C             76                                call delay2
+0079 75800E           77                                     MOV dado,#0eh
+007C 1195             78                 CALL comdisp
+007E 713C             79                                     call delay2
+0080 758001           80                             MOV dado,#01H
+0083 1195             81                             CALL comdisp
+0085 713C             82                             call delay2
+0087 22               83                 RET
+                      84     
+0088 C2A7             85     dadodisp:   clr  en
+008A C2A6             86                             clr rw
+008C D2A5             87                 setb rs
+008E D2A7             88                 setb en
+0090 7133             89                 call delay
+0092 C2A7             90                 clr  en
+0094 22               91                 ret
+                      92     
+0095 C2A7             93     comdisp:    clr  en
+0097 C2A6             94                     clr rw
+0099 C2A5             95                         clr  rs
+009B D2A7             96                 setb en
+009D 7133             97                 call delay
+009F C2A7             98                 clr  en
+00A1 22               99                 ret
+                     100     
+00A2 90031B          101     escrevemsg2019:    mov  dptr, #mensagem2019  
+00A5 7B10            102                    mov r3, #016d
+00A7 8005            103                                jmp escrevemsg2
+                     104     
+00A9 900300          105     escrevemsg:        mov  dptr, #mensagem  
+00AC 7B10            106                    mov r3, #016d
+                     107                                ;clr r4              
+                     108                                
+00AE E4              109     escrevemsg2:    clr a
+00AF 93              110                                     movc  a,@a+dptr
+00B0 F580            111                                     mov dado,a
+00B2 1188            112                                     call dadodisp
+00B4 713C            113                                     call delay2
+00B6 A3              114                                     inc dptr
+                     115                                     
+                     116                                     ;Para testar se já chegou no fim da linha 1
+00B7 1B              117                                     dec r3
+00B8 EB              118                                     mov a, r3
+00B9 6006            119                                     jz troca_linha ; se sim, vai pra linha 2
+00BB                 120     volta_esc2:             
+                     121                                     ;Volta para a rotina normal de escrita
+                     122                                     
+00BB E4              123                                     clr a
+A51 MACRO ASSEMBLER  TAREFA_3_SCRIP                                                       04/18/2018 11:01:19 PAGE     3
+
+00BC 93              124                                     movc  a,@a+dptr
+                     125                                     
+00BD B400EE          126                                     cjne a, #00h, escrevemsg2
+00C0 22              127                                     ret
+                     128     
+00C1                 129     troca_linha:
+00C1 7580C0          130                                 mov dado, #0c0h
+00C4 1195            131                                     CALL comdisp
+00C6 713C            132                                     call delay2
+00C8 80F1            133                                     jmp volta_esc2
+                     134                                
+                     135     
+                     136     
+0300                 137     org 300h
+0300 55544650        138     mensagem:  DB 'UTFPR 2018 Lucas Guilherme', 0 
+0304 52203230                
+0308 3138204C                
+030C 75636173                
+0310 20477569                
+0314 6C686572                
+0318 6D6500                  
+031B 43454645        139     mensagem2019:  DB 'CEFET 2019 Thiago Bispo', 0 
+031F 54203230                
+0323 31392054                
+0327 68696167                
+032B 6F204269                
+032F 73706F00                
+                     140     
+                     141     
+0333 780F            142     delay:      mov r0,#0FH
+0335 790F            143     loop:                   mov r1, #0FH
+0337 D9FE            144                                     djnz r1,$
+0339 D8FA            145                                djnz r0, loop
+033B 22              146                                ret
+                     147                                
+033C 78FF            148     delay2:      mov r0,#0FFH
+033E 79FF            149     loop2:          mov r1, #0FFH
+0340 D9FE            150                                     djnz r1,$
+0342 D8FA            151                                djnz r0, loop2
+0344 22              152                                ret
+                     153     
+0345                 154     debounce:
+0345 7D05            155     MOV R5, #5 ;1us
+0347                 156     DELl1:
+0347 7EC8            157         MOV R6, #200 ;1us
+0349                 158         DELl2:
+0349 7FF8            159             MOV R7, #248 ;1us
+034B                 160                 DELl3:
+034B DFFE            161                 DJNZ R7, DELl3 ;2us
+034D 00              162                 NOP                ;1us
+034E DEF9            163                 DJNZ R6, DELl2 ;2us 
+0350 DDF5            164                 DJNZ R5, DELl1 ;2us
+0352 22              165                             RET
+                     166     
+                     167     
+0500                 168     ORG 0500h
+                     169     
+0500 7D08            170     MOV R5, #8 ;1us
+0502                 171     DEL1:
+0502 7EC8            172         MOV R6, #200 ;1us
+0504                 173         DEL2:
+0504 7FF8            174             MOV R7, #248 ;1us
+0506                 175                 DEL3:
+0506 DFFE            176                 DJNZ R7, DEL3 ;2us
+0508 00              177                 NOP                ;1us
+0509 DEF9            178                 DJNZ R6, DEL2 ;2us 
+A51 MACRO ASSEMBLER  TAREFA_3_SCRIP                                                       04/18/2018 11:01:19 PAGE     4
+
+050B DDF5            179                 DJNZ R5, DEL1 ;2us
+050D 22              180     RET
+                     181     
+                     182     END
+                                                        
+A51 MACRO ASSEMBLER  TAREFA_3_SCRIP                                                       04/18/2018 11:01:19 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+COL1 . . . . . . .  B ADDR   00B0H.4 A   
+COL2 . . . . . . .  B ADDR   00B0H.5 A   
+COL3 . . . . . . .  B ADDR   00B0H.6 A   
+COL4 . . . . . . .  B ADDR   00B0H.7 A   
+COL_FUNC . . . . .  C ADDR   003FH   A   
+COMDISP. . . . . .  C ADDR   0095H   A   
+DADO . . . . . . .  D ADDR   0080H   A   
+DADODISP . . . . .  C ADDR   0088H   A   
+DEBOUNCE . . . . .  C ADDR   0345H   A   
+DEL1 . . . . . . .  C ADDR   0502H   A   
+DEL2 . . . . . . .  C ADDR   0504H   A   
+DEL3 . . . . . . .  C ADDR   0506H   A   
+DELAY. . . . . . .  C ADDR   0333H   A   
+DELAY2 . . . . . .  C ADDR   033CH   A   
+DELL1. . . . . . .  C ADDR   0347H   A   
+DELL2. . . . . . .  C ADDR   0349H   A   
+DELL3. . . . . . .  C ADDR   034BH   A   
+EN . . . . . . . .  B ADDR   00A0H.7 A   
+ESCREVEMSG . . . .  C ADDR   00A9H   A   
+ESCREVEMSG2. . . .  C ADDR   00AEH   A   
+ESCREVEMSG2019 . .  C ADDR   00A2H   A   
+INICIO . . . . . .  C ADDR   004EH   A   
+INIDISP. . . . . .  C ADDR   0064H   A   
+LIN1 . . . . . . .  B ADDR   00B0H.0 A   
+LIN2 . . . . . . .  B ADDR   00B0H.1 A   
+LIN3 . . . . . . .  B ADDR   00B0H.2 A   
+LIN4 . . . . . . .  B ADDR   00B0H.3 A   
+LIN_FUNC . . . . .  C ADDR   0037H   A   
+LOOP . . . . . . .  C ADDR   0335H   A   
+LOOP2. . . . . . .  C ADDR   033EH   A   
+LOOP_DEBOUNCE. . .  C ADDR   0047H   A   
+MENSAGEM . . . . .  C ADDR   0300H   A   
+MENSAGEM2019 . . .  C ADDR   031BH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PISCA_C. . . . . .  C ADDR   0054H   A   
+RS . . . . . . . .  B ADDR   00A0H.5 A   
+RW . . . . . . . .  B ADDR   00A0H.6 A   
+TEMP . . . . . . .  N NUMB   0500H   A   
+TROCA_LINHA. . . .  C ADDR   00C1H   A   
+VOLTA_ESC2 . . . .  C ADDR   00BBH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

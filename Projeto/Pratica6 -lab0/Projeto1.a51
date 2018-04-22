@@ -1,5 +1,5 @@
 org 00h
-jmp 030h
+jmp 040h
 
 ;Inicio P0
 dado  EQU		P0
@@ -32,7 +32,7 @@ var8	EQU		078H
 var9	EQU		077H
 
 
-ORG 030h
+ORG 040h
 
 MOV var1, #0d
 MOV var2, #0d

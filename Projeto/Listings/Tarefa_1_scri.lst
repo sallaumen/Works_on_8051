@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     1
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
 0056 75B00F           55                 mov P3, #00001111b
 0059 30B00B           56                             jnb lin1, L1_C_check
 005C 30B116           57                             jnb lin2, L2_C_check
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     2
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     2
 
 005F 30B221           58                             jnb lin3, L3_C_check
 0062 30B32C           59                             jnb lin4, L4_C_check
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
 00AF 7C10            111             mov r4, #016d
 00B1 315A            112             acall msg
                      113             
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     3
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     3
 
 00B3 857FF0          114             mov B, var1
 00B6 7401            115             mov A, #01d
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
 00FC                 177     bot_6:
 00FC                 178     bot_B:
 00FC                 179     bot_7:
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     4
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     4
 
 00FC                 180     bot_8:
 00FC                 181     bot_9:
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
 0151 22              243                             ret
                      244                             
 0152                 245     msg_aguardando2:
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     5
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     5
 
 0152 900908          246                             mov  dptr, #mensagem_aguardando_L2
 0155 7C10            247                 mov r4, #016d
@@ -337,7 +337,7 @@ LOC  OBJ            LINE     SOURCE
 072B DDF5            309                 DJNZ R5, DEL1 ;2us
 072D 22              310     RET
 0900                 311     org 0900h
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     6
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     6
 
 0900 426F6D20        312     mensagem_aguardando_L1: DB "Bom dia",0
 0904 64696100                
@@ -394,7 +394,7 @@ LOC  OBJ            LINE     SOURCE
                      332             
                      333     END
                                                         
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     7
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     7
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -462,7 +462,7 @@ MSG_4_L1 . . . . . . .  C ADDR   0940H   A
 MSG_4_L2 . . . . . . .  C ADDR   0997H   A   
 MSG_5_L1 . . . . . . .  C ADDR   094DH   A   
 MSG_5_L2 . . . . . . .  C ADDR   099AH   A   
-A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/20/2018 21:39:59 PAGE     8
+A51 MACRO ASSEMBLER  TAREFA_1_SCRI                                                        04/22/2018 18:26:15 PAGE     8
 
 MSG_6_L1 . . . . . . .  C ADDR   095AH   A   
 MSG_6_L2 . . . . . . .  C ADDR   099DH   A   

@@ -113,11 +113,11 @@ bot_9_Ljmp:
 	
 bot_1:
 	mov a, var1
-	cjne a, #10, show1
+	cjne a, #11, show1
 	mov var1,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show1:	
 	acall inidisp
@@ -190,11 +190,11 @@ show1:
 	
 bot_2:
 	mov a, var2
-	cjne a, #10, show2
+	cjne a, #11, show2
 	mov var2,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show2:	
 	acall inidisp
@@ -266,11 +266,11 @@ show2:
 	ljmp lin_check
 bot_3:
 	mov a, var3
-	cjne a, #10, show3
+	cjne a, #11, show3
 	mov var3,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show3:	
 	acall inidisp
@@ -343,11 +343,11 @@ show3:
 ;bot_A:
 bot_4:
 	mov a, var4
-	cjne a, #10, show4
+	cjne a, #11, show4
 	mov var4,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show4:	
 	acall inidisp
@@ -420,11 +420,11 @@ show4:
 
 bot_5:
 	mov a, var5
-	cjne a, #10, show5
+	cjne a, #11, show5
 	mov var5,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show5:	
 	acall inidisp
@@ -497,11 +497,11 @@ show5:
 	
 bot_6:
 	mov a, var6
-	cjne a, #10, show6
+	cjne a, #11, show6
 	mov var6,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show6:	
 	acall inidisp
@@ -571,14 +571,14 @@ show6:
 	
 	inc var6
 	ljmp lin_check
-bot_B:
+
 bot_7:
 	mov a, var7
-	cjne a, #10, show7
+	cjne a, #11, show7
 	mov var7,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show7:	
 	acall inidisp
@@ -648,13 +648,14 @@ show7:
 	
 	inc var7
 	ljmp lin_check
+
 bot_8:
 	mov a, var8
-	cjne a, #10, show8
+	cjne a, #11, show8
 	mov var8,#0
-	;setb P2.0
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show8:	
 	acall inidisp
@@ -724,13 +725,14 @@ show8:
 	
 	inc var8
 	ljmp lin_check
+
 bot_9:
 	mov a, var9
-	cjne a, #10, show9
+	cjne a, #11, show9
 	mov var9,#0
-	setb P2.0 
-	;acall delay2
-	;clr P2.0
+	setb P2.0
+	acall delay_longo
+	clr P2.0
 	acall lin_check
 show9:	
 	acall inidisp
@@ -800,11 +802,13 @@ show9:
 	
 	inc var9
 	ljmp lin_check
-bot_C:
-bot_AST:
-bot_0:
-bot_HASH:
-bot_D:
+
+;bot_B:
+;bot_C:
+;bot_AST:
+;bot_0:
+;bot_HASH:
+;bot_D:
 
         
  ;Inicializacao do display
@@ -904,7 +908,7 @@ loop2:		mov r7, #0FFH
 			   ret
 
 delay_longo:
-	MOV R5, #8 ;1us
+	MOV R5, #30 ;1us
 	DEL1:
 		MOV R6, #200 ;1us
 		DEL2:

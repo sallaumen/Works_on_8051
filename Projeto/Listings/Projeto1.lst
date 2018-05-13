@@ -1,0 +1,1138 @@
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Projeto1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Pratica6 -lab0\Projeto1.a51 SET(SMALL) DEBUG PRINT(.\Listings\Projeto1.
+                      lst) OBJECT(.\Objects\Projeto1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 00h
+0000 803E              2     jmp 040h
+                       3     
+                       4     ;Inicio P0
+  0080                 5     dado  EQU               P0
+                       6     ;Fim p0
+                       7     ;Inicio P2
+  00A5                 8     rs    EQU       P2.5    ;P3.4 alterna entre comando e dado (0-comando 1-dado) 
+  00A6                 9     rw        EQU           P2.6
+  00A7                10     en    EQU       P2.7    ;P3.5 enable display
+  0500                11     temp  EQU       0500h
+                      12     ;Fim P2
+                      13     ;Inicio P3
+  00B0                14     lin1  EQU               P3.0
+  00B1                15     lin2  EQU               P3.1
+  00B2                16     lin3  EQU               P3.2
+  00B3                17     lin4  EQU               P3.3
+  00B4                18     col1  EQU               P3.4
+  00B5                19     col2  EQU               P3.5
+  00B6                20     col3  EQU               P3.6
+  00B7                21     col4  EQU               P3.7
+                      22     ;Fim P3
+                      23     ;Inicio RAM
+  007F                24     var1    EQU             07FH
+  007E                25     var2    EQU             07eH
+  007D                26     var3    EQU             07DH
+  007C                27     var4    EQU             07CH
+  007B                28     var5    EQU             07BH
+  007A                29     var6    EQU             07AH
+  0079                30     var7    EQU             079H
+  0078                31     var8    EQU             078H
+  0077                32     var9    EQU             077H
+                      33     
+                      34     
+0040                  35     ORG 040h
+                      36     
+0040 757F00           37     MOV var1, #0d
+0043 757E00           38     MOV var2, #0d
+0046 757D00           39     MOV var3, #0d
+0049 757C00           40     MOV var4, #0d
+004C 757B00           41     MOV var5, #0d
+004F 757A00           42     MOV var6, #0d
+0052 757900           43     MOV var7, #0d
+0055 757800           44     MOV var8, #0d
+0058 757700           45     MOV var9, #0d
+                      46     
+005B 91B7             47     acall inidisp
+005D 91F5             48     acall msg_aguardando1
+005F B114             49     acall troca_para_L2
+0061 91FD             50     acall msg_aguardando2
+                      51     
+0063 75B0FF           52     mov P3, #11111111b
+0066 C2A1             53     clr P2.1
+0068                  54     lin_check:  
+0068 75B00F           55                 mov P3, #00001111b
+006B 30B008           56                             jnb lin1, L1_C_check
+006E 30B113           57                             jnb lin2, L2_C_check
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     2
+
+0071 30B21E           58                             jnb lin3, L3_C_check
+                      59                             ;jnb lin4, L4_C_check
+0074 80F2             60                             jmp lin_check
+                      61                             
+0076                  62     L1_C_check:  
+0076 75B0F0           63                 mov P3, #11110000b
+0079 30B429           64                             jnb col1, bot_1_Ljmp
+007C 30B52E           65                             jnb col2, bot_2_Ljmp
+007F 30B633           66                             jnb col3, bot_3_Ljmp
+                      67                             ;jnb col4, bot_A
+0082 80F2             68                             jmp L1_C_check
+                      69     
+0084                  70     L2_C_check:  
+0084 75B0F0           71                 mov P3, #11110000b
+0087 30B433           72                             jnb col1, bot_4_Ljmp
+008A 30B538           73                             jnb col2, bot_5_Ljmp
+008D 30B63D           74                             jnb col3, bot_6_Ljmp
+                      75                             ;jnb col4, bot_B
+0090 80F2             76                             jmp L2_C_check
+                      77                             
+0092                  78     L3_C_check:  
+0092 75B0F0           79                 mov P3, #11110000b
+0095 30B43D           80                             jnb col1, bot_7_Ljmp
+0098 30B542           81                             jnb col2, bot_8_Ljmp
+009B 30B647           82                             jnb col3, bot_9_Ljmp
+                      83                             ;jnb col4, bot_C
+009E 80F2             84                             jmp L3_C_check
+                      85                             
+00A0                  86     L4_C_check:  
+00A0 75B0F0           87                 mov P3, #11110000b
+                      88                             ;jnb col1, bot_ASC
+                      89                             ;jnb col2, bot_0
+                      90                             ;jnb col3, bot_HASH
+                      91                             ;jnb col4, bot_D
+00A3 80FB             92                             jmp L4_C_check
+00A5                  93     bot_1_Ljmp:
+00A5 B125             94         acall delay2
+                      95             ;mov P3, #11110000b
+00A7 30B4FB           96             jnb col1, bot_1_Ljmp
+00AA 0200ED           97             ljmp bot_1
+00AD                  98     bot_2_Ljmp:
+00AD B125             99             acall delay2
+00AF 30B5FB          100             jnb col2, bot_2_Ljmp
+00B2 020157          101             ljmp bot_2
+00B5                 102     bot_3_Ljmp:
+00B5 B125            103         acall delay2
+00B7 30B6FB          104             jnb col3, bot_3_Ljmp
+00BA 0201C1          105             ljmp bot_3
+00BD                 106     bot_4_Ljmp:
+00BD B125            107         acall delay2
+00BF 30B4FB          108             jnb col1, bot_4_Ljmp
+00C2 02022B          109             ljmp bot_4
+00C5                 110     bot_5_Ljmp:
+00C5 B125            111         acall delay2
+00C7 30B5FB          112             jnb col2, bot_5_Ljmp
+00CA 020295          113             ljmp bot_5
+00CD                 114     bot_6_Ljmp:
+00CD B125            115         acall delay2
+00CF 30B6FB          116             jnb col3, bot_6_Ljmp
+00D2 0202FF          117             ljmp bot_6
+00D5                 118     bot_7_Ljmp:
+00D5 B125            119         acall delay2
+00D7 30B4FB          120             jnb col1, bot_7_Ljmp
+00DA 020369          121             ljmp bot_7
+00DD                 122     bot_8_Ljmp:
+00DD B125            123         acall delay2
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     3
+
+00DF 30B5FB          124             jnb col2, bot_8_Ljmp
+00E2 0203D3          125             ljmp bot_8
+00E5                 126     bot_9_Ljmp:
+00E5 B125            127         acall delay2
+00E7 30B6FB          128             jnb col3, bot_9_Ljmp
+00EA 02043D          129             ljmp bot_9
+                     130     
+                     131             
+00ED                 132     bot_1:  
+00ED 91B7            133             acall inidisp
+                     134             ;Escreve linha 1
+00EF 900919          135             mov  dptr, #msg_1_L1
+00F2 7C10            136         mov r4, #016d
+00F4 B105            137             acall msg
+                     138             ;Troca Linha
+00F6 B114            139             acall troca_para_L2
+                     140             ;Escreve Comeco da linha 2
+00F8 90098E          141             mov  dptr, #msg_1_L2
+00FB 7C10            142             mov r4, #016d
+00FD B105            143             acall msg
+                     144             
+00FF 857FF0          145             mov B, var1
+0102 7401            146             mov A, #01d
+0104 A4              147             mul AB
+                     148             
+0105 75F00A          149             mov B,#10
+0108 84              150             div AB
+                     151             
+0109 FA              152             mov R2, A
+010A ABF0            153             mov R3, B
+                     154             
+010C E57F            155             mov A,var1
+010E 75F00A          156             mov B,#10
+0111 84              157             div AB
+                     158             
+0112 F8              159             mov R0,A
+0113 A9F0            160             mov R1,B
+                     161             
+0115 E8              162             mov A,R0
+0116 2430            163             add A,#30h
+0118 F8              164             mov R0,A
+                     165             
+0119 E9              166             mov A,R1
+011A 2430            167             add A,#30h
+011C F9              168             mov R1,A
+                     169             
+011D EA              170             mov A,R2
+011E 2430            171             add A,#30h
+0120 FA              172             mov R2,A
+                     173             
+0121 EB              174             mov A,R3
+0122 2430            175             add A,#30h
+0124 FB              176             mov R3,A
+                     177             
+0125 8880            178             mov dado, R0
+0127 91DB            179             aCALL dadodisp
+0129 B125            180             acall delay2
+                     181             
+012B 8980            182             mov dado, R1
+012D 91DB            183             aCALL dadodisp
+012F B125            184             acall delay2
+                     185             
+0131 75803D          186             mov dado, #3dh
+0134 91DB            187             aCALL dadodisp
+0136 B125            188             acall delay2
+                     189             
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     4
+
+0138 8A80            190             mov dado, R2
+013A 91DB            191             aCALL dadodisp
+013C B125            192             acall delay2
+                     193             
+013E 8B80            194             mov dado, R3
+0140 91DB            195             aCALL dadodisp
+0142 B125            196             acall delay2
+                     197             
+0144 057F            198             inc var1
+0146 E57F            199             mov a, var1
+0148 B40B09          200             cjne a, #11d, limpaVar1 
+014B D2A1            201             setb P2.1
+014D B12E            202             acall delay_longo
+014F C2A1            203             clr P2.1
+0151 757F00          204             mov var1,#0
+0154                 205     limpaVar1:      
+0154 020068          206             ljmp lin_check
+                     207             
+                     208             
+0157                 209     bot_2:
+0157 91B7            210             acall inidisp
+                     211             ;Escreve linha 1
+0159 900926          212             mov  dptr, #msg_2_L1
+015C 7C10            213         mov r4, #016d
+015E B105            214             acall msg
+                     215             ;Troca Linha
+0160 B114            216             acall troca_para_L2
+                     217             ;Escreve Comeco da linha 2
+0162 900991          218             mov  dptr, #msg_2_L2
+0165 7C10            219             mov r4, #016d
+0167 B105            220             acall msg
+                     221             
+0169 857EF0          222             mov B, var2
+016C 7402            223             mov A, #02d
+016E A4              224             mul AB
+                     225             
+016F 75F00A          226             mov B,#10
+0172 84              227             div AB
+                     228             
+0173 FA              229             mov R2, A
+0174 ABF0            230             mov R3, B
+                     231             
+0176 E57E            232             mov A,var2
+0178 75F00A          233             mov B,#10
+017B 84              234             div AB
+                     235             
+017C F8              236             mov R0,A
+017D A9F0            237             mov R1,B
+                     238             
+017F E8              239             mov A,R0
+0180 2430            240             add A,#30h
+0182 F8              241             mov R0,A
+                     242             
+0183 E9              243             mov A,R1
+0184 2430            244             add A,#30h
+0186 F9              245             mov R1,A
+                     246             
+0187 EA              247             mov A,R2
+0188 2430            248             add A,#30h
+018A FA              249             mov R2,A
+                     250             
+018B EB              251             mov A,R3
+018C 2430            252             add A,#30h
+018E FB              253             mov R3,A
+                     254             
+018F 8880            255             mov dado, R0
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     5
+
+0191 91DB            256             aCALL dadodisp
+0193 B125            257             acall delay2
+                     258             
+0195 8980            259             mov dado, R1
+0197 91DB            260             aCALL dadodisp
+0199 B125            261             acall delay2
+                     262             
+019B 75803D          263             mov dado, #3dh
+019E 91DB            264             aCALL dadodisp
+01A0 B125            265             acall delay2
+                     266             
+01A2 8A80            267             mov dado, R2
+01A4 91DB            268             aCALL dadodisp
+01A6 B125            269             acall delay2
+                     270             
+01A8 8B80            271             mov dado, R3
+01AA 91DB            272             aCALL dadodisp
+01AC B125            273             acall delay2
+                     274             
+01AE 057E            275             inc var2
+01B0 E57E            276             mov a, var2
+01B2 B40B09          277             cjne a, #11d, limpaVar2 
+01B5 D2A1            278             setb P2.1
+01B7 B12E            279             acall delay_longo
+01B9 C2A1            280             clr P2.1
+01BB 757E00          281             mov var2,#0
+01BE                 282     limpaVar2:      
+01BE 020068          283             ljmp lin_check
+01C1                 284     bot_3:
+01C1 91B7            285             acall inidisp
+                     286             ;Escreve linha 1
+01C3 900933          287             mov  dptr, #msg_3_L1
+01C6 7C10            288         mov r4, #016d
+01C8 B105            289             acall msg
+                     290             ;Troca Linha
+01CA B114            291             acall troca_para_L2
+                     292             ;Escreve Comeco da linha 2
+01CC 900994          293             mov  dptr, #msg_3_L2
+01CF 7C10            294             mov r4, #016d
+01D1 B105            295             acall msg
+                     296             
+01D3 857DF0          297             mov B, var3
+01D6 7400            298             mov A, #0d
+01D8 A4              299             mul AB
+                     300             
+01D9 75F00A          301             mov B,#10
+01DC 84              302             div AB
+                     303             
+01DD FA              304             mov R2, A
+01DE ABF0            305             mov R3, B
+                     306             
+01E0 E57D            307             mov A,var3
+01E2 75F00A          308             mov B,#10
+01E5 84              309             div AB
+                     310             
+01E6 F8              311             mov R0,A
+01E7 A9F0            312             mov R1,B
+                     313             
+01E9 E8              314             mov A,R0
+01EA 2430            315             add A,#30h
+01EC F8              316             mov R0,A
+                     317             
+01ED E9              318             mov A,R1
+01EE 2430            319             add A,#30h
+01F0 F9              320             mov R1,A
+                     321             
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     6
+
+01F1 EA              322             mov A,R2
+01F2 2430            323             add A,#30h
+01F4 FA              324             mov R2,A
+                     325             
+01F5 EB              326             mov A,R3
+01F6 2430            327             add A,#30h
+01F8 FB              328             mov R3,A
+                     329             
+01F9 8880            330             mov dado, R0
+01FB 91DB            331             aCALL dadodisp
+01FD B125            332             acall delay2
+                     333             
+01FF 8980            334             mov dado, R1
+0201 91DB            335             aCALL dadodisp
+0203 B125            336             acall delay2
+                     337             
+0205 75803D          338             mov dado, #3dh
+0208 91DB            339             aCALL dadodisp
+020A B125            340             acall delay2
+                     341             
+020C 8A80            342             mov dado, R2
+020E 91DB            343             aCALL dadodisp
+0210 B125            344             acall delay2
+                     345             
+0212 8B80            346             mov dado, R3
+0214 91DB            347             aCALL dadodisp
+0216 B125            348             acall delay2
+                     349             
+0218 057D            350             inc var3
+021A E57D            351             mov a, var3
+021C B40B09          352             cjne a, #11d, limpaVar3 
+021F D2A1            353             setb P2.1
+0221 B12E            354             acall delay_longo
+0223 C2A1            355             clr P2.1
+0225 757D00          356             mov var3,#0
+0228                 357     limpaVar3:      
+0228 020068          358             ljmp lin_check
+                     359     ;bot_A:
+022B                 360     bot_4:
+022B 91B7            361             acall inidisp
+                     362             ;Escreve linha 1
+022D 900940          363             mov  dptr, #msg_4_L1
+0230 7C10            364         mov r4, #016d
+0232 B105            365             acall msg
+                     366             ;Troca Linha
+0234 B114            367             acall troca_para_L2
+                     368             ;Escreve Comeco da linha 2
+0236 900997          369             mov  dptr, #msg_4_L2
+0239 7C10            370             mov r4, #016d
+023B B105            371             acall msg
+                     372             
+023D 857CF0          373             mov B, var4
+0240 7404            374             mov A, #04d
+0242 A4              375             mul AB
+                     376             
+0243 75F00A          377             mov B,#10
+0246 84              378             div AB
+                     379             
+0247 FA              380             mov R2, A
+0248 ABF0            381             mov R3, B
+                     382             
+024A E57C            383             mov A,var4
+024C 75F00A          384             mov B,#10
+024F 84              385             div AB
+                     386             
+0250 F8              387             mov R0,A
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     7
+
+0251 A9F0            388             mov R1,B
+                     389             
+0253 E8              390             mov A,R0
+0254 2430            391             add A,#30h
+0256 F8              392             mov R0,A
+                     393             
+0257 E9              394             mov A,R1
+0258 2430            395             add A,#30h
+025A F9              396             mov R1,A
+                     397             
+025B EA              398             mov A,R2
+025C 2430            399             add A,#30h
+025E FA              400             mov R2,A
+                     401             
+025F EB              402             mov A,R3
+0260 2430            403             add A,#30h
+0262 FB              404             mov R3,A
+                     405             
+0263 8880            406             mov dado, R0
+0265 91DB            407             aCALL dadodisp
+0267 B125            408             acall delay2
+                     409             
+0269 8980            410             mov dado, R1
+026B 91DB            411             aCALL dadodisp
+026D B125            412             acall delay2
+                     413             
+026F 75803D          414             mov dado, #3dh
+0272 91DB            415             aCALL dadodisp
+0274 B125            416             acall delay2
+                     417             
+0276 8A80            418             mov dado, R2
+0278 91DB            419             aCALL dadodisp
+027A B125            420             acall delay2
+                     421             
+027C 8B80            422             mov dado, R3
+027E 91DB            423             aCALL dadodisp
+0280 B125            424             acall delay2
+                     425             
+0282 057C            426             inc var4
+0284 E57C            427             mov a, var4
+0286 B40B09          428             cjne a, #11d, limpaVar4 
+0289 D2A1            429             setb P2.1
+028B B12E            430             acall delay_longo
+028D C2A1            431             clr P2.1
+028F 757C00          432             mov var4,#0
+0292                 433     limpaVar4:      
+0292 020068          434             ljmp lin_check
+                     435     
+0295                 436     bot_5:  
+0295 91B7            437             acall inidisp
+                     438             ;Escreve linha 1
+0297 90094D          439             mov  dptr, #msg_5_L1
+029A 7C10            440         mov r4, #016d
+029C B105            441             acall msg
+                     442             ;Troca Linha
+029E B114            443             acall troca_para_L2
+                     444             ;Escreve Comeco da linha 2
+02A0 90099A          445             mov  dptr, #msg_5_L2
+02A3 7C10            446             mov r4, #016d
+02A5 B105            447             acall msg
+                     448             
+02A7 857BF0          449             mov B, var5
+02AA 7405            450             mov A, #05d
+02AC A4              451             mul AB
+                     452             
+02AD 75F00A          453             mov B,#10
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     8
+
+02B0 84              454             div AB
+                     455             
+02B1 FA              456             mov R2, A
+02B2 ABF0            457             mov R3, B
+                     458             
+02B4 E57B            459             mov A,var5
+02B6 75F00A          460             mov B,#10
+02B9 84              461             div AB
+                     462             
+02BA F8              463             mov R0,A
+02BB A9F0            464             mov R1,B
+                     465             
+02BD E8              466             mov A,R0
+02BE 2430            467             add A,#30h
+02C0 F8              468             mov R0,A
+                     469             
+02C1 E9              470             mov A,R1
+02C2 2430            471             add A,#30h
+02C4 F9              472             mov R1,A
+                     473             
+02C5 EA              474             mov A,R2
+02C6 2430            475             add A,#30h
+02C8 FA              476             mov R2,A
+                     477             
+02C9 EB              478             mov A,R3
+02CA 2430            479             add A,#30h
+02CC FB              480             mov R3,A
+                     481             
+02CD 8880            482             mov dado, R0
+02CF 91DB            483             aCALL dadodisp
+02D1 B125            484             acall delay2
+                     485             
+02D3 8980            486             mov dado, R1
+02D5 91DB            487             aCALL dadodisp
+02D7 B125            488             acall delay2
+                     489             
+02D9 75803D          490             mov dado, #3dh
+02DC 91DB            491             aCALL dadodisp
+02DE B125            492             acall delay2
+                     493             
+02E0 8A80            494             mov dado, R2
+02E2 91DB            495             aCALL dadodisp
+02E4 B125            496             acall delay2
+                     497             
+02E6 8B80            498             mov dado, R3
+02E8 91DB            499             aCALL dadodisp
+02EA B125            500             acall delay2
+                     501             
+02EC 057B            502             inc var5
+02EE E57B            503             mov a, var5
+02F0 B40B09          504             cjne a, #11d, limpaVar5
+02F3 D2A1            505             setb P2.1
+02F5 B12E            506             acall delay_longo
+02F7 C2A1            507             clr P2.1
+02F9 757B00          508             mov var5,#0
+02FC                 509     limpaVar5:      
+02FC 020068          510             ljmp lin_check
+                     511             
+02FF                 512     bot_6:
+02FF 91B7            513             acall inidisp
+                     514             ;Escreve linha 1
+0301 90095A          515             mov  dptr, #msg_6_L1
+0304 7C10            516         mov r4, #016d
+0306 B105            517             acall msg
+                     518             ;Troca Linha
+0308 B114            519             acall troca_para_L2
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE     9
+
+                     520             ;Escreve Comeco da linha 2
+030A 90099D          521             mov  dptr, #msg_6_L2
+030D 7C10            522             mov r4, #016d
+030F B105            523             acall msg
+                     524             
+0311 857AF0          525             mov B, var6
+0314 7406            526             mov A, #06d
+0316 A4              527             mul AB
+                     528             
+0317 75F00A          529             mov B,#10
+031A 84              530             div AB
+                     531             
+031B FA              532             mov R2, A
+031C ABF0            533             mov R3, B
+                     534             
+031E E57A            535             mov A,var6
+0320 75F00A          536             mov B,#10
+0323 84              537             div AB
+                     538             
+0324 F8              539             mov R0,A
+0325 A9F0            540             mov R1,B
+                     541             
+0327 E8              542             mov A,R0
+0328 2430            543             add A,#30h
+032A F8              544             mov R0,A
+                     545             
+032B E9              546             mov A,R1
+032C 2430            547             add A,#30h
+032E F9              548             mov R1,A
+                     549             
+032F EA              550             mov A,R2
+0330 2430            551             add A,#30h
+0332 FA              552             mov R2,A
+                     553             
+0333 EB              554             mov A,R3
+0334 2430            555             add A,#30h
+0336 FB              556             mov R3,A
+                     557             
+0337 8880            558             mov dado, R0
+0339 91DB            559             aCALL dadodisp
+033B B125            560             acall delay2
+                     561             
+033D 8980            562             mov dado, R1
+033F 91DB            563             aCALL dadodisp
+0341 B125            564             acall delay2
+                     565             
+0343 75803D          566             mov dado, #3dh
+0346 91DB            567             aCALL dadodisp
+0348 B125            568             acall delay2
+                     569             
+034A 8A80            570             mov dado, R2
+034C 91DB            571             aCALL dadodisp
+034E B125            572             acall delay2
+                     573             
+0350 8B80            574             mov dado, R3
+0352 91DB            575             aCALL dadodisp
+0354 B125            576             acall delay2
+                     577             
+0356 057A            578             inc var6
+0358 E57A            579             mov a, var6
+035A B40B09          580             cjne a, #11d, limpaVar6
+035D D2A1            581             setb P2.1
+035F B12E            582             acall delay_longo
+0361 C2A1            583             clr P2.1
+0363 757A00          584             mov var6,#0
+0366                 585     limpaVar6:      
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    10
+
+0366 020068          586             ljmp lin_check
+                     587     
+0369                 588     bot_7:  
+0369 91B7            589             acall inidisp
+                     590             ;Escreve linha 1
+036B 900967          591             mov  dptr, #msg_7_L1
+036E 7C10            592         mov r4, #016d
+0370 B105            593             acall msg
+                     594             ;Troca Linha
+0372 B114            595             acall troca_para_L2
+                     596             ;Escreve Comeco da linha 2
+0374 9009A0          597             mov  dptr, #msg_7_L2
+0377 7C10            598             mov r4, #016d
+0379 B105            599             acall msg
+                     600             
+037B 8579F0          601             mov B, var7
+037E 7407            602             mov A, #07d
+0380 A4              603             mul AB
+                     604             
+0381 75F00A          605             mov B,#10
+0384 84              606             div AB
+                     607             
+0385 FA              608             mov R2, A
+0386 ABF0            609             mov R3, B
+                     610             
+0388 E579            611             mov A,var7
+038A 75F00A          612             mov B,#10
+038D 84              613             div AB
+                     614             
+038E F8              615             mov R0,A
+038F A9F0            616             mov R1,B
+                     617             
+0391 E8              618             mov A,R0
+0392 2430            619             add A,#30h
+0394 F8              620             mov R0,A
+                     621             
+0395 E9              622             mov A,R1
+0396 2430            623             add A,#30h
+0398 F9              624             mov R1,A
+                     625             
+0399 EA              626             mov A,R2
+039A 2430            627             add A,#30h
+039C FA              628             mov R2,A
+                     629             
+039D EB              630             mov A,R3
+039E 2430            631             add A,#30h
+03A0 FB              632             mov R3,A
+                     633             
+03A1 8880            634             mov dado, R0
+03A3 91DB            635             aCALL dadodisp
+03A5 B125            636             acall delay2
+                     637             
+03A7 8980            638             mov dado, R1
+03A9 91DB            639             aCALL dadodisp
+03AB B125            640             acall delay2
+                     641             
+03AD 75803D          642             mov dado, #3dh
+03B0 91DB            643             aCALL dadodisp
+03B2 B125            644             acall delay2
+                     645             
+03B4 8A80            646             mov dado, R2
+03B6 91DB            647             aCALL dadodisp
+03B8 B125            648             acall delay2
+                     649             
+03BA 8B80            650             mov dado, R3
+03BC 91DB            651             aCALL dadodisp
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    11
+
+03BE B125            652             acall delay2
+                     653             
+03C0 0579            654             inc var7
+03C2 E579            655             mov a, var7
+03C4 B40B09          656             cjne a, #11d, limpaVar7
+03C7 D2A1            657             setb P2.1
+03C9 B12E            658             acall delay_longo
+03CB C2A1            659             clr P2.1
+03CD 757900          660             mov var7,#0
+03D0                 661     limpaVar7:      
+03D0 020068          662             ljmp lin_check
+                     663     
+03D3                 664     bot_8:
+03D3 91B7            665             acall inidisp
+                     666             ;Escreve linha 1
+03D5 900974          667             mov  dptr, #msg_8_L1
+03D8 7C10            668         mov r4, #016d
+03DA B105            669             acall msg
+                     670             ;Troca Linha
+03DC B114            671             acall troca_para_L2
+                     672             ;Escreve Comeco da linha 2
+03DE 9009A3          673             mov  dptr, #msg_8_L2
+03E1 7C10            674             mov r4, #016d
+03E3 B105            675             acall msg
+                     676             
+03E5 8578F0          677             mov B, var8
+03E8 7408            678             mov A, #08d
+03EA A4              679             mul AB
+                     680             
+03EB 75F00A          681             mov B,#10
+03EE 84              682             div AB
+                     683             
+03EF FA              684             mov R2, A
+03F0 ABF0            685             mov R3, B
+                     686             
+03F2 E578            687             mov A,var8
+03F4 75F00A          688             mov B,#10
+03F7 84              689             div AB
+                     690             
+03F8 F8              691             mov R0,A
+03F9 A9F0            692             mov R1,B
+                     693             
+03FB E8              694             mov A,R0
+03FC 2430            695             add A,#30h
+03FE F8              696             mov R0,A
+                     697             
+03FF E9              698             mov A,R1
+0400 2430            699             add A,#30h
+0402 F9              700             mov R1,A
+                     701             
+0403 EA              702             mov A,R2
+0404 2430            703             add A,#30h
+0406 FA              704             mov R2,A
+                     705             
+0407 EB              706             mov A,R3
+0408 2430            707             add A,#30h
+040A FB              708             mov R3,A
+                     709             
+040B 8880            710             mov dado, R0
+040D 91DB            711             aCALL dadodisp
+040F B125            712             acall delay2
+                     713             
+0411 8980            714             mov dado, R1
+0413 91DB            715             aCALL dadodisp
+0415 B125            716             acall delay2
+                     717             
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    12
+
+0417 75803D          718             mov dado, #3dh
+041A 91DB            719             aCALL dadodisp
+041C B125            720             acall delay2
+                     721             
+041E 8A80            722             mov dado, R2
+0420 91DB            723             aCALL dadodisp
+0422 B125            724             acall delay2
+                     725             
+0424 8B80            726             mov dado, R3
+0426 91DB            727             aCALL dadodisp
+0428 B125            728             acall delay2
+                     729             
+042A 0578            730             inc var8
+042C E578            731             mov a, var8
+042E B40B09          732             cjne a, #11d, limpaVar8
+0431 D2A1            733             setb P2.1
+0433 B12E            734             acall delay_longo
+0435 C2A1            735             clr P2.1
+0437 757800          736             mov var8,#0
+043A                 737     limpaVar8:      
+043A 020068          738             ljmp lin_check
+                     739     
+043D                 740     bot_9:  
+043D 91B7            741             acall inidisp
+                     742             ;Escreve linha 1
+043F 900981          743             mov  dptr, #msg_9_L1
+0442 7C10            744         mov r4, #016d
+0444 B105            745             acall msg
+                     746             ;Troca Linha
+0446 B114            747             acall troca_para_L2
+                     748             ;Escreve Comeco da linha 2
+0448 9009A6          749             mov  dptr, #msg_9_L2
+044B 7C10            750             mov r4, #016d
+044D B105            751             acall msg
+                     752             
+044F 8577F0          753             mov B, var9
+0452 7409            754             mov A, #09d
+0454 A4              755             mul AB
+                     756             
+0455 75F00A          757             mov B,#10
+0458 84              758             div AB
+                     759             
+0459 FA              760             mov R2, A
+045A ABF0            761             mov R3, B
+                     762             
+045C E577            763             mov A,var9
+045E 75F00A          764             mov B,#10
+0461 84              765             div AB
+                     766             
+0462 F8              767             mov R0,A
+0463 A9F0            768             mov R1,B
+                     769             
+0465 E8              770             mov A,R0
+0466 2430            771             add A,#30h
+0468 F8              772             mov R0,A
+                     773             
+0469 E9              774             mov A,R1
+046A 2430            775             add A,#30h
+046C F9              776             mov R1,A
+                     777             
+046D EA              778             mov A,R2
+046E 2430            779             add A,#30h
+0470 FA              780             mov R2,A
+                     781             
+0471 EB              782             mov A,R3
+0472 2430            783             add A,#30h
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    13
+
+0474 FB              784             mov R3,A
+                     785             
+0475 8880            786             mov dado, R0
+0477 91DB            787             aCALL dadodisp
+0479 B125            788             acall delay2
+                     789             
+047B 8980            790             mov dado, R1
+047D 91DB            791             aCALL dadodisp
+047F B125            792             acall delay2
+                     793             
+0481 75803D          794             mov dado, #3dh
+0484 91DB            795             aCALL dadodisp
+0486 B125            796             acall delay2
+                     797             
+0488 8A80            798             mov dado, R2
+048A 91DB            799             aCALL dadodisp
+048C B125            800             acall delay2
+                     801             
+048E 8B80            802             mov dado, R3
+0490 91DB            803             aCALL dadodisp
+0492 B125            804             acall delay2
+                     805             
+0494 0577            806             inc var9
+0496 E577            807             mov a, var9
+0498 B40B09          808             cjne a, #11d, limpaVar9
+049B D2A1            809             setb P2.1
+049D B12E            810             acall delay_longo
+049F C2A1            811             clr P2.1
+04A1 757700          812             mov var9,#0
+04A4                 813     limpaVar9:      
+04A4 020068          814             ljmp lin_check
+                     815     
+                     816     ;bot_B:
+                     817     ;bot_C:
+                     818     ;bot_AST:
+                     819     ;bot_0:
+                     820     ;bot_HASH:
+                     821     ;bot_D:
+                     822     
+                     823             
+                     824      ;Inicializacao do display
+                     825     ;------------------------------------------------------------------------;
+                     826     ;Rotina que inicializa o display para o uso                              ;
+                     827     ;nao tem dados de entrada e nao devolve nada                             ;
+                     828     ;------------------------------------------------------------------------;
+04A7                 829     pisca_cursor:
+04A7 75800E          830                     MOV dado,#0eh
+04AA 91E8            831                     CALL comdisp
+04AC B100            832                     call temp
+04AE 75800C          833                     MOV dado,#0ch
+04B1 91E8            834                     CALL comdisp
+04B3 B100            835                     call temp
+04B5 80F0            836                     jmp pisca_cursor
+                     837     
+04B7 758038          838     inidisp:    mov dado,#38h
+                     839                             ;mov dado,#3ch
+04BA 91E8            840                 CALL comdisp
+04BC B125            841                             call delay2
+04BE 758038          842                             mov dado,#38h
+                     843                             ;mov dado,#3ch
+04C1 91E8            844                 CALL comdisp
+04C3 B125            845                             call delay2
+04C5 758006          846                                     MOV dado,#06h
+04C8 91E8            847                 CALL comdisp
+04CA B125            848                                call delay2
+04CC 75800E          849                                     MOV dado,#0eh
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    14
+
+04CF 91E8            850                 CALL comdisp
+04D1 B125            851                                     call delay2
+04D3 758001          852                             MOV dado,#01H
+04D6 91E8            853                             CALL comdisp
+04D8 B125            854                             call delay2
+04DA 22              855                 RET
+                     856     
+04DB C2A7            857     dadodisp:   clr  en
+04DD C2A6            858                             clr rw
+04DF D2A5            859                 setb rs
+04E1 D2A7            860                 setb en
+04E3 B11C            861                 call delay
+04E5 C2A7            862                 clr  en
+04E7 22              863                 ret
+                     864     
+04E8 C2A7            865     comdisp:    clr  en
+04EA C2A6            866                     clr rw
+04EC C2A5            867                         clr  rs
+04EE D2A7            868                 setb en
+04F0 B11C            869                 call delay
+04F2 C2A7            870                 clr  en
+04F4 22              871                 ret
+                     872     
+                     873     
+04F5                 874     msg_aguardando1:
+04F5 900900          875                             mov  dptr, #mensagem_aguardando_L1
+04F8 7C10            876                 mov r4, #016d
+04FA 8009            877                             jmp msg
+04FC 22              878                             ret
+                     879                             
+04FD                 880     msg_aguardando2:
+04FD 900908          881                             mov  dptr, #mensagem_aguardando_L2
+0500 7C10            882                 mov r4, #016d
+0502 8001            883                             jmp msg
+0504 22              884                             ret
+                     885                             
+                     886                                
+0505 E4              887     msg:                    clr a
+0506 93              888                                     movc  a,@a+dptr
+0507 F580            889                                     mov dado,a
+0509 91DB            890                                     call dadodisp
+050B B125            891                                     call delay2
+050D A3              892                                     inc dptr
+050E E4              893                                     clr a
+050F 93              894                                     movc  a,@a+dptr
+                     895                                     
+0510 B400F2          896                                     cjne a, #00h, msg
+0513 22              897                                     ret
+                     898                                     
+                     899                                     
+                     900     
+0514                 901     troca_para_L2:
+0514 7580C0          902                                 mov dado, #0c0h
+0517 91E8            903                                     aCALL comdisp
+0519 B125            904                                     acall delay2
+051B 22              905                                 ret
+                     906     
+                     907     
+051C 7E0F            908     delay:      mov r6,#0FH
+051E 7F0F            909     loop:                   mov r7, #0FH
+0520 DFFE            910                                     djnz r7,$
+0522 DEFA            911                                djnz r6, loop
+0524 22              912                                ret
+                     913                                
+0525 7EFF            914     delay2:      mov r6,#0FFH
+0527 7FFF            915     loop2:          mov r7, #0FFH
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    15
+
+0529 DFFE            916                                     djnz r7,$
+052B DEFA            917                                djnz r6, loop2
+052D 22              918                                ret
+                     919     
+052E                 920     delay_longo:
+052E 7D3C            921             MOV R5, #60 ;1us
+0530                 922             DEL1:
+0530 7EC8            923                     MOV R6, #200 ;1us
+0532                 924                     DEL2:
+0532 7FF8            925                             MOV R7, #248 ;1us
+0534                 926                                     DEL3:
+0534 DFFE            927                                     DJNZ R7, DEL3 ;2us
+0536 00              928                                     NOP                ;1us
+0537 DEF9            929                                     DJNZ R6, DEL2 ;2us 
+0539 DDF5            930                                     DJNZ R5, DEL1 ;2us
+053B 22              931             RET
+                     932             
+                     933             
+0900                 934     org 0900h
+0900 426F6D20        935     mensagem_aguardando_L1: DB "Bom dia",0
+0904 64696100                
+0908 41706572        936     mensagem_aguardando_L2: DB "Aperte uma tecla",0 
+090C 74652075                
+0910 6D612074                
+0914 65636C61                
+0918 00                      
+0919 54616275        937     msg_1_L1: DB "Tabuada do 1",0
+091D 61646120                
+0921 646F2031                
+0925 00                      
+0926 54616275        938     msg_2_L1: DB "Tabuada do 2",0
+092A 61646120                
+092E 646F2032                
+0932 00                      
+0933 54616275        939     msg_3_L1: DB "Tabuada do 3",0
+0937 61646120                
+093B 646F2033                
+093F 00                      
+0940 54616275        940     msg_4_L1: DB "Tabuada do 4",0
+0944 61646120                
+0948 646F2034                
+094C 00                      
+094D 54616275        941     msg_5_L1: DB "Tabuada do 5",0
+0951 61646120                
+0955 646F2035                
+0959 00                      
+095A 54616275        942     msg_6_L1: DB "Tabuada do 6",0
+095E 61646120                
+0962 646F2036                
+0966 00                      
+0967 54616275        943     msg_7_L1: DB "Tabuada do 7",0
+096B 61646120                
+096F 646F2037                
+0973 00                      
+0974 54616275        944     msg_8_L1: DB "Tabuada do 8",0
+0978 61646120                
+097C 646F2038                
+0980 00                      
+0981 54616275        945     msg_9_L1: DB "Tabuada do 9",0
+0985 61646120                
+0989 646F2039                
+098D 00                      
+098E 317800          946     msg_1_L2: DB "1x",0
+0991 327800          947     msg_2_L2: DB "2x",0
+0994 337800          948     msg_3_L2: DB "3x",0
+0997 347800          949     msg_4_L2: DB "4x",0
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    16
+
+099A 357800          950     msg_5_L2: DB "5x",0
+099D 367800          951     msg_6_L2: DB "6x",0
+09A0 377800          952     msg_7_L2: DB "7x",0
+09A3 387800          953     msg_8_L2: DB "8x",0
+09A6 397800          954     msg_9_L2: DB "9x",0
+                     955     END
+                                                        
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    17
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                 T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . . . .  D ADDR   00F0H   A   
+BOT_1. . . . . . . . .  C ADDR   00EDH   A   
+BOT_1_LJMP . . . . . .  C ADDR   00A5H   A   
+BOT_2. . . . . . . . .  C ADDR   0157H   A   
+BOT_2_LJMP . . . . . .  C ADDR   00ADH   A   
+BOT_3. . . . . . . . .  C ADDR   01C1H   A   
+BOT_3_LJMP . . . . . .  C ADDR   00B5H   A   
+BOT_4. . . . . . . . .  C ADDR   022BH   A   
+BOT_4_LJMP . . . . . .  C ADDR   00BDH   A   
+BOT_5. . . . . . . . .  C ADDR   0295H   A   
+BOT_5_LJMP . . . . . .  C ADDR   00C5H   A   
+BOT_6. . . . . . . . .  C ADDR   02FFH   A   
+BOT_6_LJMP . . . . . .  C ADDR   00CDH   A   
+BOT_7. . . . . . . . .  C ADDR   0369H   A   
+BOT_7_LJMP . . . . . .  C ADDR   00D5H   A   
+BOT_8. . . . . . . . .  C ADDR   03D3H   A   
+BOT_8_LJMP . . . . . .  C ADDR   00DDH   A   
+BOT_9. . . . . . . . .  C ADDR   043DH   A   
+BOT_9_LJMP . . . . . .  C ADDR   00E5H   A   
+COL1 . . . . . . . . .  B ADDR   00B0H.4 A   
+COL2 . . . . . . . . .  B ADDR   00B0H.5 A   
+COL3 . . . . . . . . .  B ADDR   00B0H.6 A   
+COL4 . . . . . . . . .  B ADDR   00B0H.7 A   
+COMDISP. . . . . . . .  C ADDR   04E8H   A   
+DADO . . . . . . . . .  D ADDR   0080H   A   
+DADODISP . . . . . . .  C ADDR   04DBH   A   
+DEL1 . . . . . . . . .  C ADDR   0530H   A   
+DEL2 . . . . . . . . .  C ADDR   0532H   A   
+DEL3 . . . . . . . . .  C ADDR   0534H   A   
+DELAY. . . . . . . . .  C ADDR   051CH   A   
+DELAY2 . . . . . . . .  C ADDR   0525H   A   
+DELAY_LONGO. . . . . .  C ADDR   052EH   A   
+EN . . . . . . . . . .  B ADDR   00A0H.7 A   
+INIDISP. . . . . . . .  C ADDR   04B7H   A   
+L1_C_CHECK . . . . . .  C ADDR   0076H   A   
+L2_C_CHECK . . . . . .  C ADDR   0084H   A   
+L3_C_CHECK . . . . . .  C ADDR   0092H   A   
+L4_C_CHECK . . . . . .  C ADDR   00A0H   A   
+LIMPAVAR1. . . . . . .  C ADDR   0154H   A   
+LIMPAVAR2. . . . . . .  C ADDR   01BEH   A   
+LIMPAVAR3. . . . . . .  C ADDR   0228H   A   
+LIMPAVAR4. . . . . . .  C ADDR   0292H   A   
+LIMPAVAR5. . . . . . .  C ADDR   02FCH   A   
+LIMPAVAR6. . . . . . .  C ADDR   0366H   A   
+LIMPAVAR7. . . . . . .  C ADDR   03D0H   A   
+LIMPAVAR8. . . . . . .  C ADDR   043AH   A   
+LIMPAVAR9. . . . . . .  C ADDR   04A4H   A   
+LIN1 . . . . . . . . .  B ADDR   00B0H.0 A   
+LIN2 . . . . . . . . .  B ADDR   00B0H.1 A   
+LIN3 . . . . . . . . .  B ADDR   00B0H.2 A   
+LIN4 . . . . . . . . .  B ADDR   00B0H.3 A   
+LIN_CHECK. . . . . . .  C ADDR   0068H   A   
+LOOP . . . . . . . . .  C ADDR   051EH   A   
+LOOP2. . . . . . . . .  C ADDR   0527H   A   
+MENSAGEM_AGUARDANDO_L1  C ADDR   0900H   A   
+MENSAGEM_AGUARDANDO_L2  C ADDR   0908H   A   
+MSG. . . . . . . . . .  C ADDR   0505H   A   
+MSG_1_L1 . . . . . . .  C ADDR   0919H   A   
+MSG_1_L2 . . . . . . .  C ADDR   098EH   A   
+MSG_2_L1 . . . . . . .  C ADDR   0926H   A   
+A51 MACRO ASSEMBLER  PROJETO1                                                             04/25/2018 10:53:00 PAGE    18
+
+MSG_2_L2 . . . . . . .  C ADDR   0991H   A   
+MSG_3_L1 . . . . . . .  C ADDR   0933H   A   
+MSG_3_L2 . . . . . . .  C ADDR   0994H   A   
+MSG_4_L1 . . . . . . .  C ADDR   0940H   A   
+MSG_4_L2 . . . . . . .  C ADDR   0997H   A   
+MSG_5_L1 . . . . . . .  C ADDR   094DH   A   
+MSG_5_L2 . . . . . . .  C ADDR   099AH   A   
+MSG_6_L1 . . . . . . .  C ADDR   095AH   A   
+MSG_6_L2 . . . . . . .  C ADDR   099DH   A   
+MSG_7_L1 . . . . . . .  C ADDR   0967H   A   
+MSG_7_L2 . . . . . . .  C ADDR   09A0H   A   
+MSG_8_L1 . . . . . . .  C ADDR   0974H   A   
+MSG_8_L2 . . . . . . .  C ADDR   09A3H   A   
+MSG_9_L1 . . . . . . .  C ADDR   0981H   A   
+MSG_9_L2 . . . . . . .  C ADDR   09A6H   A   
+MSG_AGUARDANDO1. . . .  C ADDR   04F5H   A   
+MSG_AGUARDANDO2. . . .  C ADDR   04FDH   A   
+P0 . . . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . . . .  D ADDR   00B0H   A   
+PISCA_CURSOR . . . . .  C ADDR   04A7H   A   
+RS . . . . . . . . . .  B ADDR   00A0H.5 A   
+RW . . . . . . . . . .  B ADDR   00A0H.6 A   
+TEMP . . . . . . . . .  N NUMB   0500H   A   
+TROCA_PARA_L2. . . . .  C ADDR   0514H   A   
+VAR1 . . . . . . . . .  N NUMB   007FH   A   
+VAR2 . . . . . . . . .  N NUMB   007EH   A   
+VAR3 . . . . . . . . .  N NUMB   007DH   A   
+VAR4 . . . . . . . . .  N NUMB   007CH   A   
+VAR5 . . . . . . . . .  N NUMB   007BH   A   
+VAR6 . . . . . . . . .  N NUMB   007AH   A   
+VAR7 . . . . . . . . .  N NUMB   0079H   A   
+VAR8 . . . . . . . . .  N NUMB   0078H   A   
+VAR9 . . . . . . . . .  N NUMB   0077H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

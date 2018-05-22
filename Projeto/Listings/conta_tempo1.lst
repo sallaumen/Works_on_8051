@@ -1,0 +1,55 @@
+A51 MACRO ASSEMBLER  CONTA_TEMPO1                                                         05/15/2018 23:06:03 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\conta_tempo1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE conta_tempo1.a51 SET(SMALL) DEBUG PRINT(.\Listings\conta_tempo1.lst) OB
+                      JECT(.\Objects\conta_tempo1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 00h
+0000 020011            2     ljmp main
+                       3     ;Interrupcoes
+000B                   4     ORG 0bh
+000B C2AF              5     clr ea
+000D 020022            6     ljmp fim
+0010 32                7     reti
+                       8     
+0011                   9     main:
+0011 D2A9             10     delay:  SETB ET0
+0013 758901           11                     MOV TMOD, #01h
+0016 758C00           12                     MOV TH0, #00h;
+0019 758A00           13                     MOV TL0, #00h
+001C D2AF             14                     SETB EA
+                      15                     ;setb delay1_var
+001E D28C             16                     SETB TR0
+0020 00               17                     nop
+0021 00               18                     nop
+                      19                     ;sjmp $
+                      20                     ;ret
+0022                  21     fim:
+                      22     end
+A51 MACRO ASSEMBLER  CONTA_TEMPO1                                                         05/15/2018 23:06:03 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   0011H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+FIM. . . . . . . .  C ADDR   0022H   A   
+MAIN . . . . . . .  C ADDR   0011H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

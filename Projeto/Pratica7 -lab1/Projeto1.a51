@@ -1,6 +1,6 @@
 org 00h
-SETB EX0
-SETB IE0
+;SETB EX0
+;SETB IE0
 ljmp main
 
 ;Interrupcoes
@@ -41,24 +41,25 @@ motor2 EQU P2.1
 motor3 EQU P2.2
 motor4 EQU P2.3
 
+;Tabela Reg:
+;r0 = imprime voltas
+;r1 = delay
+;r2 = imprime voltas 
+;r3 = imprime voltas
+;r4 = imprime voltas
+;r5 = guarda numero de voltas
+;r6 = delay
+;r7 = delay
+
 ;Inicio RAM
 var1	EQU		07FH
-var2	EQU		07eH
-var3	EQU		07DH
-var4	EQU		07CH
-var5	EQU		07BH
-var6	EQU		07AH
-var7	EQU		079H
-var8	EQU		078H
-var9	EQU		077H
-
 ;-------------MAIN---------------
 org 0200h
 main:
 acall inidisp
 acall msg_aguardando1
 acall troca_para_L2
-acall msg_aguardando2
+;acall msg_aguardando2
 mov P3, #11111111b
 clr P2.0
 clr P2.1
@@ -191,6 +192,8 @@ bot_0:
 	mul AB
 	add A, #0d
 	mov R5,A
+	mov dado, #30h
+	acall dadodisp
 	ljmp lin_check
 bot_1:
 	mov A, R5
@@ -198,6 +201,8 @@ bot_1:
 	mul AB
 	add A, #1d	
 	mov R5,A
+	mov dado, #31h
+	acall dadodisp
 	ljmp lin_check
 bot_2:
 	mov A, R5
@@ -205,6 +210,8 @@ bot_2:
 	mul AB
 	add A, #2d
 	mov R5,A
+	mov dado, #32h
+	acall dadodisp
 	ljmp lin_check
 bot_3:
 	mov A, R5
@@ -212,6 +219,8 @@ bot_3:
 	mul AB
 	add A, #3d
 	mov R5,A
+	mov dado, #33h
+	acall dadodisp
 	ljmp lin_check
 bot_4:
 	mov A, R5
@@ -219,6 +228,8 @@ bot_4:
 	mul AB
 	add A, #4d
 	mov R5,A
+	mov dado, #34h
+	acall dadodisp
 	ljmp lin_check
 bot_5:
 	mov A, R5
@@ -226,6 +237,8 @@ bot_5:
 	mul AB
 	add A, #5d
 	mov R5,A
+	mov dado, #35h
+	acall dadodisp
 	ljmp lin_check
 bot_6:
 	mov A, R5
@@ -233,6 +246,8 @@ bot_6:
 	mul AB
 	add A, #6d
 	mov R5,A
+	mov dado,#36h
+	acall dadodisp
 	ljmp lin_check
 bot_7:
 	mov A, R5
@@ -240,6 +255,8 @@ bot_7:
 	mul AB
 	add A, #7d
 	mov R5,A
+	mov dado, #37h
+	acall dadodisp
 	ljmp lin_check
 bot_8:
 	mov A, R5
@@ -247,6 +264,8 @@ bot_8:
 	mul AB
 	add A, #8d
 	mov R5,A
+	mov dado, #38h
+	acall dadodisp
 	ljmp lin_check
 bot_9:
 	mov A, R5
@@ -254,6 +273,8 @@ bot_9:
 	mul AB
 	add A, #9d
 	mov R5,A
+	mov dado, #39h
+	acall dadodisp
 	ljmp lin_check
 bot_HASH:
 	cjne R5,#0d,calcula_volta
@@ -262,14 +283,21 @@ bot_HASH:
 	ljmp main
 calcula_volta:	
 	mov A,R5
+	jz main_ljmp ; checa se nao e zero
 	mov B,#255d
 	div AB
-	jnz check_sent
+	jz printa_sent
 	mov A,B
-	jnz check_sent
+	jz printa_sent
+main_ljmp:
 	acall msg_inv
 	acall delay1seg
 	ljmp main
+printa_sent:
+	acall inidisp
+	acall msg_sentido1
+	acall troca_para_L2
+	acall msg_sentido2
 check_sent:
 	setb lin3
 	mov P3, #00001111b
@@ -299,28 +327,30 @@ bot_A2:
 bot_B2: 
 	ljmp sentido_anti_horario
 sentido_horario:
+	acall inidisp    
 	acall imprime_voltas
 	acall msg_decrem
+	mov R0,#95d
 	acall passo_completo_horario
-	djnz R5, imprime_fim
+	djnz R5, sentido_horario
+	jmp imprime_fim
 sentido_anti_horario:
+	acall inidisp
 	acall imprime_voltas
 	acall msg_decrem
+	mov R0,#95d
 	acall passo_completo_anti_horario
-	djnz R5, imprime_fim
-imprime_fim:
-	acall msg_end
-	acall delay1seg
-	ljmp check_ast
+	djnz R5, sentido_anti_horario
+	jmp imprime_fim
 imprime_voltas:
 mov A,R5
 	mov B,#100
 	div AB
 	
 	mov R4,A
-	mov R0,B
+	mov var1,B
 	
-	mov A,R0
+	mov A,var1
 	mov B,#10
 	div AB
 	
@@ -352,7 +382,13 @@ mov A,R5
 	acall delay2
 	
 	ret
-
+	
+imprime_fim:
+	acall inidisp
+	acall msg_end
+	acall delay1seg
+	ljmp check_ast
+	
 ;##########################################
 passo_completo_horario:
     acall delay_step_motor
@@ -376,6 +412,7 @@ passo_completo_horario:
     acall delay_step_motor
     clr P2.1
     setb P2.0
+	djnz R0, passo_completo_horario
     ret
 passo_completo_anti_horario:
     acall delay_step_motor
@@ -399,7 +436,8 @@ passo_completo_anti_horario:
     acall delay_step_motor
     clr P2.2
     setb P2.3
-    ret
+    djnz R0, passo_completo_anti_horario
+	ret
 meio_passo_horario:
     acall delay_step_motor
     clr P2.0
@@ -468,23 +506,18 @@ inidisp:    mov dado,#38h
 			;mov dado,#3ch
             CALL comdisp
 			call delay2
-			call delay2
 			mov dado,#38h
 			;mov dado,#3ch
             CALL comdisp
 			call delay2
-			call delay2
 			MOV dado,#06h
             CALL comdisp
 		    call delay2
-			call delay2
 			MOV dado,#0eh
             CALL comdisp
 			call delay2
-			call delay2
 			MOV dado,#01H
 			CALL comdisp
-			call delay2
 			call delay2
             RET
 
@@ -503,15 +536,31 @@ comdisp:    clr  en
             call delay
             clr  en
             ret
-
+msg_numero:
+			mov  dptr, #mensagem_aguardando_L1
+            mov r4, #016d
+			jmp msg
+			ret
 msg_aguardando1:
 			mov  dptr, #mensagem_aguardando_L1
             mov r4, #016d
 			jmp msg
 			ret
 			
-msg_aguardando2:
-			mov  dptr, #mensagem_aguardando_L2
+;msg_aguardando2:;
+;			mov  dptr, #mensagem_aguardando_L2
+ ;           mov r4, #016d
+	;		jmp msg
+	;		ret
+			
+msg_sentido1:
+			mov  dptr, #mensagem_sentido1
+            mov r4, #016d
+			jmp msg
+			ret
+			
+msg_sentido2:
+			mov  dptr, #mensagem_sentido2
             mov r4, #016d
 			jmp msg
 			ret
@@ -580,10 +629,17 @@ loop2:		mov r7, #0FFH
 			ret
 			
 delay_step_motor:      
-			mov r6,#0FH
-loop3:		mov r7, #0FH
-			djnz r7,$
-			djnz r6, loop
+	MOV R7, #255d
+	MOV R6, #25d
+	MOV R1, #1d
+	aux_3:
+		MOV R6, #25d
+	aux_4:
+		MOV R7, #250d
+	aux_5:
+		DJNZ R7, aux_5
+		DJNZ R6, aux_4
+		DJNZ R1, aux_3
 			ret
 			
 delay1seg:
@@ -615,9 +671,11 @@ delay1seg:
 ;			reti
 
 org 0900h
-;Mensagens com amor
-mensagem_aguardando_L1: DB "Digite qtas volt",0
-mensagem_aguardando_L2: DB "as e o sentido: ",0	
+;Mensagens com amor##########################
+mensagem_aguardando_L1: DB "Digite o numero:",0
+;mensagem_aguardando_L2: DB "",0	
+mensagem_sentido1: DB "Sentido: A=Hor",0
+mensagem_sentido2: DB "B=Ant-Hor",0
 mensagem_invalido: DB "Valor invalido  ",0
 mensagem_decrementando: DB " para acabar.",0 ;IE: 255 para acabar.
 mensagem_FIM: DB "      FIM",0

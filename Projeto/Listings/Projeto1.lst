@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     1
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -9,9 +9,9 @@ ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Pratica7 -lab1\Projeto1.a51 SET
 LOC  OBJ            LINE     SOURCE
 
 0000                   1     org 00h
-0000 D2A8              2     SETB EX0
-0002 D289              3     SETB IE0
-0004 020200            4     ljmp main
+                       2     ;SETB EX0
+                       3     ;SETB IE0
+0000 020200            4     ljmp main
                        5     
                        6     ;Interrupcoes
 0003                   7     ORG 03h
@@ -51,627 +51,688 @@ LOC  OBJ            LINE     SOURCE
   00A2                41     motor3 EQU P2.2
   00A3                42     motor4 EQU P2.3
                       43     
-                      44     ;Inicio RAM
-  007F                45     var1    EQU             07FH
-  007E                46     var2    EQU             07eH
-  007D                47     var3    EQU             07DH
-  007C                48     var4    EQU             07CH
-  007B                49     var5    EQU             07BH
-  007A                50     var6    EQU             07AH
-  0079                51     var7    EQU             079H
-  0078                52     var8    EQU             078H
-  0077                53     var9    EQU             077H
-                      54     
-                      55     ;-------------MAIN---------------
-0200                  56     org 0200h
-0200                  57     main:
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     2
+                      44     ;Tabela Reg:
+                      45     ;r0 = imprime voltas
+                      46     ;r1 = delay
+                      47     ;r2 = imprime voltas 
+                      48     ;r3 = imprime voltas
+                      49     ;r4 = imprime voltas
+                      50     ;r5 = guarda numero de voltas
+                      51     ;r6 = delay
+                      52     ;r7 = delay
+                      53     
+                      54     ;Inicio RAM
+  007F                55     var1    EQU             07FH
+                      56     ;-------------MAIN---------------
+0200                  57     org 0200h
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     2
 
-0200 91BA             58     acall inidisp
-0202 B102             59     acall msg_aguardando1
-0204 B141             60     acall troca_para_L2
-0206 B10A             61     acall msg_aguardando2
-0208 75B0FF           62     mov P3, #11111111b
-020B C2A0             63     clr P2.0
-020D C2A1             64     clr P2.1
-020F C2A2             65     clr P2.2
-0211 C2A3             66     clr P2.3
-0213 7D00             67     mov R5,#0h ;registrador que guarda o numero de voltas
-0215                  68     lin_check:  
-0215 D2A4             69                 setb lin3
-0217 75B00F           70                             mov P3, #00001111b
-021A 30B00B           71                             jnb lin1, L1_C_check
-021D 30B11B           72                             jnb lin2, L2_C_check
-0220 30A42B           73                             jnb lin3, L3_C_check
-0223 30B33B           74                             jnb lin4, L4_C_check
-0226 80ED             75                             jmp lin_check
-0228                  76     L1_C_check: 
-0228 C2A4             77                             clr lin3
-022A 75B0F4           78                 mov P3, #11110100b
-022D 30B45C           79                             jnb col1, bot_1_Ljmp
-0230 30B561           80                             jnb col2, bot_2_Ljmp
-0233 30B666           81                             jnb col3, bot_3_Ljmp
-0236 30B73B           82                             jnb col4, bot_A_Ljmp
-0239 80ED             83                             jmp L1_C_check
-023B                  84     L2_C_check: 
-023B C2A4             85                             clr lin3
-023D 75B0F4           86                 mov P3, #11110100b
-0240 30B461           87                             jnb col1, bot_4_Ljmp
-0243 30B566           88                             jnb col2, bot_5_Ljmp
-0246 30B66B           89                             jnb col3, bot_6_Ljmp
-0249 30B730           90                             jnb col4, bot_B_Ljmp
-024C 80ED             91                             jmp L2_C_check
-024E                  92     L3_C_check:  
-024E C2A4             93                             clr lin3
-0250 75B0F4           94                 mov P3, #11110100b
-0253 30B466           95                             jnb col1, bot_7_Ljmp
-0256 30B56B           96                             jnb col2, bot_8_Ljmp
-0259 30B670           97                             jnb col3, bot_9_Ljmp
-025C 30B775           98                             jnb col4, bot_C_Ljmp
-025F 80ED             99                             jmp L3_C_check
-0261                 100     L4_C_check:  
-0261 C2A4            101                             clr lin3
-0263 75B0F4          102                 mov P3, #11110100b
-0266 30B47B          103                             jnb col1, bot_AST_Ljmp
-0269 30B518          104                             jnb col2, bot_0_Ljmp
-026C 30B67D          105                             jnb col3, bot_HASH_Ljmp
-026F 30B76A          106                             jnb col4, bot_D_Ljmp
-0272 80ED            107                             jmp L4_C_check
-0274                 108     bot_A_Ljmp:
-0274 B152            109             acall delay2
-0276 30B7FB          110             jnb col4, bot_A_Ljmp
-0279 02030B          111             ljmp bot_A
-027C                 112     bot_B_Ljmp:
-027C B152            113             acall delay2
-027E 30B7FB          114             jnb col4, bot_B_Ljmp
-0281 02030E          115             ljmp bot_B
-0284                 116     bot_0_Ljmp:
-0284 B152            117         acall delay2
-0286 30B5FB          118             jnb col2, bot_0_Ljmp
-0289 020317          119             ljmp bot_0
-028C                 120     bot_1_Ljmp:
-028C B152            121         acall delay2
-028E 30B4FB          122             jnb col1, bot_1_Ljmp
-0291 020322          123             ljmp bot_1      
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     3
+0200                  58     main:
+0200 B108             59     acall inidisp
+0202 B14E             60     acall msg_aguardando1
+0204 B195             61     acall troca_para_L2
+                      62     ;acall msg_aguardando2
+0206 75B0FF           63     mov P3, #11111111b
+0209 C2A0             64     clr P2.0
+020B C2A1             65     clr P2.1
+020D C2A2             66     clr P2.2
+020F C2A3             67     clr P2.3
+0211 7D00             68     mov R5,#0h ;registrador que guarda o numero de voltas
+0213                  69     lin_check:  
+0213 D2A4             70                 setb lin3
+0215 75B00F           71                             mov P3, #00001111b
+0218 30B00B           72                             jnb lin1, L1_C_check
+021B 30B11B           73                             jnb lin2, L2_C_check
+021E 30A42B           74                             jnb lin3, L3_C_check
+0221 30B33B           75                             jnb lin4, L4_C_check
+0224 80ED             76                             jmp lin_check
+0226                  77     L1_C_check: 
+0226 C2A4             78                             clr lin3
+0228 75B0F4           79                 mov P3, #11110100b
+022B 30B45C           80                             jnb col1, bot_1_Ljmp
+022E 30B561           81                             jnb col2, bot_2_Ljmp
+0231 30B666           82                             jnb col3, bot_3_Ljmp
+0234 30B73B           83                             jnb col4, bot_A_Ljmp
+0237 80ED             84                             jmp L1_C_check
+0239                  85     L2_C_check: 
+0239 C2A4             86                             clr lin3
+023B 75B0F4           87                 mov P3, #11110100b
+023E 30B461           88                             jnb col1, bot_4_Ljmp
+0241 30B566           89                             jnb col2, bot_5_Ljmp
+0244 30B66B           90                             jnb col3, bot_6_Ljmp
+0247 30B730           91                             jnb col4, bot_B_Ljmp
+024A 80ED             92                             jmp L2_C_check
+024C                  93     L3_C_check:  
+024C C2A4             94                             clr lin3
+024E 75B0F4           95                 mov P3, #11110100b
+0251 30B466           96                             jnb col1, bot_7_Ljmp
+0254 30B56B           97                             jnb col2, bot_8_Ljmp
+0257 30B670           98                             jnb col3, bot_9_Ljmp
+025A 30B775           99                             jnb col4, bot_C_Ljmp
+025D 80ED            100                             jmp L3_C_check
+025F                 101     L4_C_check:  
+025F C2A4            102                             clr lin3
+0261 75B0F4          103                 mov P3, #11110100b
+0264 30B47B          104                             jnb col1, bot_AST_Ljmp
+0267 30B518          105                             jnb col2, bot_0_Ljmp
+026A 30B67D          106                             jnb col3, bot_HASH_Ljmp
+026D 30B76A          107                             jnb col4, bot_D_Ljmp
+0270 80ED            108                             jmp L4_C_check
+0272                 109     bot_A_Ljmp:
+0272 B1A6            110             acall delay2
+0274 30B7FB          111             jnb col4, bot_A_Ljmp
+0277 020309          112             ljmp bot_A
+027A                 113     bot_B_Ljmp:
+027A B1A6            114             acall delay2
+027C 30B7FB          115             jnb col4, bot_B_Ljmp
+027F 02030C          116             ljmp bot_B
+0282                 117     bot_0_Ljmp:
+0282 B1A6            118         acall delay2
+0284 30B5FB          119             jnb col2, bot_0_Ljmp
+0287 020315          120             ljmp bot_0
+028A                 121     bot_1_Ljmp:
+028A B1A6            122         acall delay2
+028C 30B4FB          123             jnb col1, bot_1_Ljmp
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     3
 
-0294                 124     bot_2_Ljmp:
-0294 B152            125             acall delay2
-0296 30B5FB          126             jnb col2, bot_2_Ljmp
-0299 02032D          127             ljmp bot_2
-029C                 128     bot_3_Ljmp:
-029C B152            129         acall delay2
-029E 30B6FB          130             jnb col3, bot_3_Ljmp
-02A1 020338          131             ljmp bot_3
-02A4                 132     bot_4_Ljmp:
-02A4 B152            133         acall delay2
-02A6 30B4FB          134             jnb col1, bot_4_Ljmp
-02A9 020343          135             ljmp bot_4
-02AC                 136     bot_5_Ljmp:
-02AC B152            137         acall delay2
-02AE 30B5FB          138             jnb col2, bot_5_Ljmp
-02B1 02034E          139             ljmp bot_5
-02B4                 140     bot_6_Ljmp:
-02B4 B152            141         acall delay2
-02B6 30B6FB          142             jnb col3, bot_6_Ljmp
-02B9 020359          143             ljmp bot_6
-02BC                 144     bot_7_Ljmp:
-02BC B152            145         acall delay2
-02BE 30B4FB          146             jnb col1, bot_7_Ljmp
-02C1 020364          147             ljmp bot_7
-02C4                 148     bot_8_Ljmp:
-02C4 B152            149         acall delay2
-02C6 30B5FB          150             jnb col2, bot_8_Ljmp
-02C9 02036F          151             ljmp bot_8
-02CC                 152     bot_9_Ljmp:
-02CC B152            153         acall delay2
-02CE 30B6FB          154             jnb col3, bot_9_Ljmp
-02D1 02037A          155             ljmp bot_9
-02D4                 156     bot_C_Ljmp:
-02D4 B152            157         acall delay2
-02D6 30B7FB          158             jnb col4, bot_C_Ljmp
-02D9 020311          159             ljmp bot_C
-02DC                 160     bot_D_Ljmp:
-02DC B152            161         acall delay2
-02DE 30B7FB          162             jnb col4, bot_D_Ljmp
-02E1 020314          163             ljmp bot_D
-02E4                 164     bot_AST_Ljmp:
-02E4 B152            165         acall delay2
-02E6 30B4FB          166             jnb col1, bot_AST_Ljmp
-02E9 020308          167             ljmp bot_AST
-02EC                 168     bot_HASH_Ljmp:
-02EC B152            169         acall delay2
-02EE 30B6FB          170             jnb col3, bot_HASH_Ljmp
-02F1 020385          171             ljmp bot_HASH
-02F4                 172     check_ast:
-02F4 D2A4            173             setb lin3
-02F6 75B00F          174             mov P3, #00001111b
-02F9 30B302          175             jnb lin4, L4_AST_check
-02FC 80F6            176             jmp check_ast
-02FE                 177     L4_AST_check:
-02FE C2A4            178             clr lin3
-0300 75B0F4          179             mov P3, #11110100b
-0303 30B4DE          180             jnb col1, bot_AST_Ljmp
-0306 80F6            181             jmp L4_AST_check
-0308                 182     bot_AST:
-0308 020200          183             ljmp main       
-030B 020215          184     bot_A: ljmp lin_check
-030E 020215          185     bot_B: ljmp lin_check
-0311 020215          186     bot_C: ljmp lin_check
-0314 020215          187     bot_D: ljmp lin_check
-0317                 188     bot_0:  
-0317 ED              189             mov A, R5
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     4
+028F 020325          124             ljmp bot_1      
+0292                 125     bot_2_Ljmp:
+0292 B1A6            126             acall delay2
+0294 30B5FB          127             jnb col2, bot_2_Ljmp
+0297 020335          128             ljmp bot_2
+029A                 129     bot_3_Ljmp:
+029A B1A6            130         acall delay2
+029C 30B6FB          131             jnb col3, bot_3_Ljmp
+029F 020345          132             ljmp bot_3
+02A2                 133     bot_4_Ljmp:
+02A2 B1A6            134         acall delay2
+02A4 30B4FB          135             jnb col1, bot_4_Ljmp
+02A7 020355          136             ljmp bot_4
+02AA                 137     bot_5_Ljmp:
+02AA B1A6            138         acall delay2
+02AC 30B5FB          139             jnb col2, bot_5_Ljmp
+02AF 020365          140             ljmp bot_5
+02B2                 141     bot_6_Ljmp:
+02B2 B1A6            142         acall delay2
+02B4 30B6FB          143             jnb col3, bot_6_Ljmp
+02B7 020375          144             ljmp bot_6
+02BA                 145     bot_7_Ljmp:
+02BA B1A6            146         acall delay2
+02BC 30B4FB          147             jnb col1, bot_7_Ljmp
+02BF 020385          148             ljmp bot_7
+02C2                 149     bot_8_Ljmp:
+02C2 B1A6            150         acall delay2
+02C4 30B5FB          151             jnb col2, bot_8_Ljmp
+02C7 020395          152             ljmp bot_8
+02CA                 153     bot_9_Ljmp:
+02CA B1A6            154         acall delay2
+02CC 30B6FB          155             jnb col3, bot_9_Ljmp
+02CF 0203A5          156             ljmp bot_9
+02D2                 157     bot_C_Ljmp:
+02D2 B1A6            158         acall delay2
+02D4 30B7FB          159             jnb col4, bot_C_Ljmp
+02D7 02030F          160             ljmp bot_C
+02DA                 161     bot_D_Ljmp:
+02DA B1A6            162         acall delay2
+02DC 30B7FB          163             jnb col4, bot_D_Ljmp
+02DF 020312          164             ljmp bot_D
+02E2                 165     bot_AST_Ljmp:
+02E2 B1A6            166         acall delay2
+02E4 30B4FB          167             jnb col1, bot_AST_Ljmp
+02E7 020306          168             ljmp bot_AST
+02EA                 169     bot_HASH_Ljmp:
+02EA B1A6            170         acall delay2
+02EC 30B6FB          171             jnb col3, bot_HASH_Ljmp
+02EF 0203B5          172             ljmp bot_HASH
+02F2                 173     check_ast:
+02F2 D2A4            174             setb lin3
+02F4 75B00F          175             mov P3, #00001111b
+02F7 30B302          176             jnb lin4, L4_AST_check
+02FA 80F6            177             jmp check_ast
+02FC                 178     L4_AST_check:
+02FC C2A4            179             clr lin3
+02FE 75B0F4          180             mov P3, #11110100b
+0301 30B4DE          181             jnb col1, bot_AST_Ljmp
+0304 80F6            182             jmp L4_AST_check
+0306                 183     bot_AST:
+0306 020200          184             ljmp main       
+0309 020213          185     bot_A: ljmp lin_check
+030C 020213          186     bot_B: ljmp lin_check
+030F 020213          187     bot_C: ljmp lin_check
+0312 020213          188     bot_D: ljmp lin_check
+0315                 189     bot_0:  
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     4
 
-0318 75F00A          190             mov B, #10d
-031B A4              191             mul AB
-031C 2400            192             add A, #0d
-031E FD              193             mov R5,A
-031F 020215          194             ljmp lin_check
-0322                 195     bot_1:
-0322 ED              196             mov A, R5
-0323 75F00A          197             mov B, #10d
-0326 A4              198             mul AB
-0327 2401            199             add A, #1d      
-0329 FD              200             mov R5,A
-032A 020215          201             ljmp lin_check
-032D                 202     bot_2:
-032D ED              203             mov A, R5
-032E 75F00A          204             mov B, #10d
-0331 A4              205             mul AB
-0332 2402            206             add A, #2d
-0334 FD              207             mov R5,A
-0335 020215          208             ljmp lin_check
-0338                 209     bot_3:
-0338 ED              210             mov A, R5
-0339 75F00A          211             mov B, #10d
-033C A4              212             mul AB
-033D 2403            213             add A, #3d
-033F FD              214             mov R5,A
-0340 020215          215             ljmp lin_check
-0343                 216     bot_4:
-0343 ED              217             mov A, R5
-0344 75F00A          218             mov B, #10d
-0347 A4              219             mul AB
-0348 2404            220             add A, #4d
-034A FD              221             mov R5,A
-034B 020215          222             ljmp lin_check
-034E                 223     bot_5:
-034E ED              224             mov A, R5
-034F 75F00A          225             mov B, #10d
-0352 A4              226             mul AB
-0353 2405            227             add A, #5d
-0355 FD              228             mov R5,A
-0356 020215          229             ljmp lin_check
-0359                 230     bot_6:
-0359 ED              231             mov A, R5
-035A 75F00A          232             mov B, #10d
-035D A4              233             mul AB
-035E 2406            234             add A, #6d
-0360 FD              235             mov R5,A
-0361 020215          236             ljmp lin_check
-0364                 237     bot_7:
-0364 ED              238             mov A, R5
-0365 75F00A          239             mov B, #10d
-0368 A4              240             mul AB
-0369 2407            241             add A, #7d
-036B FD              242             mov R5,A
-036C 020215          243             ljmp lin_check
-036F                 244     bot_8:
-036F ED              245             mov A, R5
-0370 75F00A          246             mov B, #10d
-0373 A4              247             mul AB
-0374 2408            248             add A, #8d
-0376 FD              249             mov R5,A
-0377 020215          250             ljmp lin_check
-037A                 251     bot_9:
-037A ED              252             mov A, R5
-037B 75F00A          253             mov B, #10d
-037E A4              254             mul AB
-037F 2409            255             add A, #9d
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     5
+0315 ED              190             mov A, R5
+0316 75F00A          191             mov B, #10d
+0319 A4              192             mul AB
+031A 2400            193             add A, #0d
+031C FD              194             mov R5,A
+031D 758030          195             mov dado, #30h
+0320 B12C            196             acall dadodisp
+0322 020213          197             ljmp lin_check
+0325                 198     bot_1:
+0325 ED              199             mov A, R5
+0326 75F00A          200             mov B, #10d
+0329 A4              201             mul AB
+032A 2401            202             add A, #1d      
+032C FD              203             mov R5,A
+032D 758031          204             mov dado, #31h
+0330 B12C            205             acall dadodisp
+0332 020213          206             ljmp lin_check
+0335                 207     bot_2:
+0335 ED              208             mov A, R5
+0336 75F00A          209             mov B, #10d
+0339 A4              210             mul AB
+033A 2402            211             add A, #2d
+033C FD              212             mov R5,A
+033D 758032          213             mov dado, #32h
+0340 B12C            214             acall dadodisp
+0342 020213          215             ljmp lin_check
+0345                 216     bot_3:
+0345 ED              217             mov A, R5
+0346 75F00A          218             mov B, #10d
+0349 A4              219             mul AB
+034A 2403            220             add A, #3d
+034C FD              221             mov R5,A
+034D 758033          222             mov dado, #33h
+0350 B12C            223             acall dadodisp
+0352 020213          224             ljmp lin_check
+0355                 225     bot_4:
+0355 ED              226             mov A, R5
+0356 75F00A          227             mov B, #10d
+0359 A4              228             mul AB
+035A 2404            229             add A, #4d
+035C FD              230             mov R5,A
+035D 758034          231             mov dado, #34h
+0360 B12C            232             acall dadodisp
+0362 020213          233             ljmp lin_check
+0365                 234     bot_5:
+0365 ED              235             mov A, R5
+0366 75F00A          236             mov B, #10d
+0369 A4              237             mul AB
+036A 2405            238             add A, #5d
+036C FD              239             mov R5,A
+036D 758035          240             mov dado, #35h
+0370 B12C            241             acall dadodisp
+0372 020213          242             ljmp lin_check
+0375                 243     bot_6:
+0375 ED              244             mov A, R5
+0376 75F00A          245             mov B, #10d
+0379 A4              246             mul AB
+037A 2406            247             add A, #6d
+037C FD              248             mov R5,A
+037D 758036          249             mov dado,#36h
+0380 B12C            250             acall dadodisp
+0382 020213          251             ljmp lin_check
+0385                 252     bot_7:
+0385 ED              253             mov A, R5
+0386 75F00A          254             mov B, #10d
+0389 A4              255             mul AB
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     5
 
-0381 FD              256             mov R5,A
-0382 020215          257             ljmp lin_check
-0385                 258     bot_HASH:
-0385 BD0007          259             cjne R5,#0d,calcula_volta
-0388 B11A            260             acall msg_inv
-038A B164            261             acall delay1seg
-038C 020200          262             ljmp main
-038F                 263     calcula_volta:  
-038F ED              264             mov A,R5
-0390 75F0FF          265             mov B,#255d
-0393 84              266             div AB
-0394 700B            267             jnz check_sent
-0396 E5F0            268             mov A,B
-0398 7007            269             jnz check_sent
-039A B11A            270             acall msg_inv
-039C B164            271             acall delay1seg
-039E 020200          272             ljmp main
-03A1                 273     check_sent:
-03A1 D2A4            274             setb lin3
-03A3 75B00F          275             mov P3, #00001111b
-03A6 30B005          276             jnb lin1, L1_A_check
-03A9 30B10C          277             jnb lin2, L2_B_check
-03AC 80F3            278             jmp check_sent
-03AE                 279     L1_A_check:
-03AE C2A4            280             clr lin3
-03B0 75B0F4          281             mov P3, #11110100b
-03B3 30B70C          282             jnb col4, bot_A_jmp
-03B6 80F6            283             jmp L1_A_check
-03B8                 284     L2_B_check:
-03B8 C2A4            285             clr lin3
-03BA 75B0F4          286             mov P3, #11110100b
-03BD 30B70A          287             jnb col4, bot_B_jmp
-03C0 80F6            288             jmp L2_B_check
-03C2                 289     bot_A_jmp:
-03C2 B152            290         acall delay2
-03C4 30B7FB          291             jnb col4, bot_A_jmp
-03C7 0203D2          292             ljmp bot_A2
-03CA                 293     bot_B_jmp:
-03CA B152            294         acall delay2
-03CC 30B7FB          295             jnb col4, bot_B_jmp
-03CF 0203D5          296             ljmp bot_B2
-03D2                 297     bot_A2:
-03D2 0203D8          298             ljmp sentido_horario
-03D5                 299     bot_B2: 
-03D5 0203E0          300             ljmp sentido_anti_horario
-03D8                 301     sentido_horario:
-03D8 71EF            302             acall imprime_voltas
-03DA B112            303             acall msg_decrem
-03DC 911E            304             acall passo_completo_horario
-03DE DD08            305             djnz R5, imprime_fim
-03E0                 306     sentido_anti_horario:
-03E0 71EF            307             acall imprime_voltas
-03E2 B112            308             acall msg_decrem
-03E4 9141            309             acall passo_completo_anti_horario
-03E6 DD00            310             djnz R5, imprime_fim
-03E8                 311     imprime_fim:
-03E8 B122            312             acall msg_end
-03EA B164            313             acall delay1seg
-03EC 0202F4          314             ljmp check_ast
-03EF                 315     imprime_voltas:
-03EF ED              316     mov A,R5
-03F0 75F064          317             mov B,#100
-03F3 84              318             div AB
-                     319             
-03F4 FC              320             mov R4,A
-03F5 A8F0            321             mov R0,B
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     6
+038A 2407            256             add A, #7d
+038C FD              257             mov R5,A
+038D 758037          258             mov dado, #37h
+0390 B12C            259             acall dadodisp
+0392 020213          260             ljmp lin_check
+0395                 261     bot_8:
+0395 ED              262             mov A, R5
+0396 75F00A          263             mov B, #10d
+0399 A4              264             mul AB
+039A 2408            265             add A, #8d
+039C FD              266             mov R5,A
+039D 758038          267             mov dado, #38h
+03A0 B12C            268             acall dadodisp
+03A2 020213          269             ljmp lin_check
+03A5                 270     bot_9:
+03A5 ED              271             mov A, R5
+03A6 75F00A          272             mov B, #10d
+03A9 A4              273             mul AB
+03AA 2409            274             add A, #9d
+03AC FD              275             mov R5,A
+03AD 758039          276             mov dado, #39h
+03B0 B12C            277             acall dadodisp
+03B2 020213          278             ljmp lin_check
+03B5                 279     bot_HASH:
+03B5 BD0007          280             cjne R5,#0d,calcula_volta
+03B8 B16E            281             acall msg_inv
+03BA B1C0            282             acall delay1seg
+03BC 020200          283             ljmp main
+03BF                 284     calcula_volta:  
+03BF ED              285             mov A,R5
+03C0 600A            286             jz main_ljmp ; checa se nao e zero
+03C2 75F0FF          287             mov B,#255d
+03C5 84              288             div AB
+03C6 600B            289             jz printa_sent
+03C8 E5F0            290             mov A,B
+03CA 6007            291             jz printa_sent
+03CC                 292     main_ljmp:
+03CC B16E            293             acall msg_inv
+03CE B1C0            294             acall delay1seg
+03D0 020200          295             ljmp main
+03D3                 296     printa_sent:
+03D3 B108            297             acall inidisp
+03D5 B156            298             acall msg_sentido1
+03D7 B195            299             acall troca_para_L2
+03D9 B15E            300             acall msg_sentido2
+03DB                 301     check_sent:
+03DB D2A4            302             setb lin3
+03DD 75B00F          303             mov P3, #00001111b
+03E0 30B005          304             jnb lin1, L1_A_check
+03E3 30B10C          305             jnb lin2, L2_B_check
+03E6 80F3            306             jmp check_sent
+03E8                 307     L1_A_check:
+03E8 C2A4            308             clr lin3
+03EA 75B0F4          309             mov P3, #11110100b
+03ED 30B70C          310             jnb col4, bot_A_jmp
+03F0 80F6            311             jmp L1_A_check
+03F2                 312     L2_B_check:
+03F2 C2A4            313             clr lin3
+03F4 75B0F4          314             mov P3, #11110100b
+03F7 30B70A          315             jnb col4, bot_B_jmp
+03FA 80F6            316             jmp L2_B_check
+03FC                 317     bot_A_jmp:
+03FC B1A6            318         acall delay2
+03FE 30B7FB          319             jnb col4, bot_A_jmp
+0401 02040C          320             ljmp bot_A2
+0404                 321     bot_B_jmp:
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     6
 
-                     322             
-03F7 E8              323             mov A,R0
-03F8 75F00A          324             mov B,#10
-03FB 84              325             div AB
-                     326             
-03FC FB              327             mov R3,A
-03FD AAF0            328             mov R2,B
-                     329             
-03FF EC              330             mov A,R4
-0400 2430            331             add A,#30h
-0402 FC              332             mov R4,A
-                     333             
-0403 EB              334             mov A,R3
-0404 2430            335             add A,#30h
-0406 FB              336             mov R3,A
-                     337             
-0407 EA              338             mov A,R2
-0408 2430            339             add A,#30h
-040A FA              340             mov R2,A
-                     341             
-040B 8C80            342             mov dado, R4
-040D 91E8            343             aCALL dadodisp
-040F B152            344             acall delay2
-                     345             
-0411 8B80            346             mov dado, R3
-0413 91E8            347             aCALL dadodisp
-0415 B152            348             acall delay2
+0404 B1A6            322         acall delay2
+0406 30B7FB          323             jnb col4, bot_B_jmp
+0409 02040F          324             ljmp bot_B2
+040C                 325     bot_A2:
+040C 020412          326             ljmp sentido_horario
+040F                 327     bot_B2: 
+040F 020420          328             ljmp sentido_anti_horario
+0412                 329     sentido_horario:
+0412 B108            330             acall inidisp    
+0414 912E            331             acall imprime_voltas
+0416 B166            332             acall msg_decrem
+0418 785F            333             mov R0,#95d
+041A 9168            334             acall passo_completo_horario
+041C DDF4            335             djnz R5, sentido_horario
+041E 803F            336             jmp imprime_fim
+0420                 337     sentido_anti_horario:
+0420 B108            338             acall inidisp
+0422 912E            339             acall imprime_voltas
+0424 B166            340             acall msg_decrem
+0426 785F            341             mov R0,#95d
+0428 918D            342             acall passo_completo_anti_horario
+042A DDF4            343             djnz R5, sentido_anti_horario
+042C 8031            344             jmp imprime_fim
+042E                 345     imprime_voltas:
+042E ED              346     mov A,R5
+042F 75F064          347             mov B,#100
+0432 84              348             div AB
                      349             
-0417 8A80            350             mov dado, R2
-0419 91E8            351             aCALL dadodisp
-041B B152            352             acall delay2
-                     353             
-041D 22              354             ret
-                     355     
-                     356     ;##########################################
-041E                 357     passo_completo_horario:
-041E B15B            358         acall delay_step_motor
-0420 C2A0            359         clr P2.0
-0422 C2A1            360         clr P2.1
-0424 C2A2            361         clr P2.2
-0426 C2A3            362         clr P2.3
-                     363         ;0001
-0428 B15B            364         acall delay_step_motor
-042A C2A0            365         clr P2.0
-042C D2A3            366         setb P2.3
-                     367         ;0010
-042E B15B            368         acall delay_step_motor
-0430 C2A3            369         clr P2.3
-0432 D2A2            370         setb P2.2
-                     371         ;0100
-0434 B15B            372         acall delay_step_motor
-0436 C2A2            373         clr P2.2
-0438 D2A1            374         setb P2.1
-                     375         ;1000
-043A B15B            376         acall delay_step_motor
-043C C2A1            377         clr P2.1
-043E D2A0            378         setb P2.0
-0440 22              379         ret
-0441                 380     passo_completo_anti_horario:
-0441 B15B            381         acall delay_step_motor
-0443 C2A0            382         clr P2.0
-0445 C2A1            383         clr P2.1
-0447 C2A2            384         clr P2.2
-0449 C2A3            385         clr P2.3
-                     386         ;1000
-044B B15B            387         acall delay_step_motor
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     7
+0433 FC              350             mov R4,A
+0434 85F07F          351             mov var1,B
+                     352             
+0437 E57F            353             mov A,var1
+0439 75F00A          354             mov B,#10
+043C 84              355             div AB
+                     356             
+043D FB              357             mov R3,A
+043E AAF0            358             mov R2,B
+                     359             
+0440 EC              360             mov A,R4
+0441 2430            361             add A,#30h
+0443 FC              362             mov R4,A
+                     363             
+0444 EB              364             mov A,R3
+0445 2430            365             add A,#30h
+0447 FB              366             mov R3,A
+                     367             
+0448 EA              368             mov A,R2
+0449 2430            369             add A,#30h
+044B FA              370             mov R2,A
+                     371             
+044C 8C80            372             mov dado, R4
+044E B12C            373             aCALL dadodisp
+0450 B1A6            374             acall delay2
+                     375             
+0452 8B80            376             mov dado, R3
+0454 B12C            377             aCALL dadodisp
+0456 B1A6            378             acall delay2
+                     379             
+0458 8A80            380             mov dado, R2
+045A B12C            381             aCALL dadodisp
+045C B1A6            382             acall delay2
+                     383             
+045E 22              384             ret
+                     385             
+045F                 386     imprime_fim:
+045F B108            387             acall inidisp
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     7
 
-044D C2A3            388         clr P2.3
-044F D2A0            389         setb P2.0
-                     390         ;0100
-0451 B15B            391         acall delay_step_motor
-0453 C2A0            392         clr P2.0
-0455 D2A1            393         setb P2.1
-                     394         ;0010
-0457 B15B            395         acall delay_step_motor
-0459 C2A1            396         clr P2.1
-045B D2A2            397         setb P2.2
-                     398         ;0001
-045D B15B            399         acall delay_step_motor
-045F C2A2            400         clr P2.2
-0461 D2A3            401         setb P2.3
-0463 22              402         ret
-0464                 403     meio_passo_horario:
-0464 B15B            404         acall delay_step_motor
-0466 C2A0            405         clr P2.0
-0468 C2A1            406         clr P2.1
-046A C2A2            407         clr P2.2
-046C C2A3            408         clr P2.3
-                     409         ;0001
-046E B15B            410         acall delay_step_motor
-0470 D2A3            411         setb P2.3
-                     412         ;0011
-0472 B15B            413         acall delay_step_motor
-0474 D2A2            414         setb P2.2
-                     415         ;0010
-0476 B15B            416         acall delay_step_motor
-0478 C2A3            417         CLR P2.3
-                     418         ;0110
-047A B15B            419         acall delay_step_motor
-047C D2A1            420         SETB P2.1
-                     421         ;0100
-047E B15B            422         acall delay_step_motor
-0480 C2A2            423         CLR P2.2
-                     424         ;1100
-0482 B15B            425         acall delay_step_motor
-0484 D2A0            426         SETB P2.0
-                     427         ;1000
-0486 B15B            428         acall delay_step_motor
-0488 C2A1            429         CLR P2.1
-                     430         ;1001
-048A B15B            431         acall delay_step_motor
-048C D2A3            432         SETB P2.3
-048E 22              433             ret
-048F                 434     meio_passo_anti_horario:
-048F B15B            435         acall delay_step_motor
-0491 C2A0            436         clr P2.0
-0493 C2A1            437         clr P2.1
-0495 C2A2            438         clr P2.2
-0497 C2A3            439         clr P2.3
-                     440         ;1000
-0499 B15B            441         acall delay_step_motor
-049B D2A0            442         SETB P2.0
-                     443         ;1100
-049D B15B            444         acall delay_step_motor
-049F D2A1            445         SETB P2.1
-                     446         ;0100
-04A1 B15B            447         acall delay_step_motor
-04A3 C2A0            448         CLR P2.0
-                     449         ;0110
-04A5 B15B            450         acall delay_step_motor
-04A7 D2A2            451         SETB P2.2
-                     452         ;0010
-04A9 B15B            453         acall delay_step_motor
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     8
+0461 B176            388             acall msg_end
+0463 B1C0            389             acall delay1seg
+0465 0202F2          390             ljmp check_ast
+                     391             
+                     392     ;##########################################
+0468                 393     passo_completo_horario:
+0468 B1AF            394         acall delay_step_motor
+046A C2A0            395         clr P2.0
+046C C2A1            396         clr P2.1
+046E C2A2            397         clr P2.2
+0470 C2A3            398         clr P2.3
+                     399         ;0001
+0472 B1AF            400         acall delay_step_motor
+0474 C2A0            401         clr P2.0
+0476 D2A3            402         setb P2.3
+                     403         ;0010
+0478 B1AF            404         acall delay_step_motor
+047A C2A3            405         clr P2.3
+047C D2A2            406         setb P2.2
+                     407         ;0100
+047E B1AF            408         acall delay_step_motor
+0480 C2A2            409         clr P2.2
+0482 D2A1            410         setb P2.1
+                     411         ;1000
+0484 B1AF            412         acall delay_step_motor
+0486 C2A1            413         clr P2.1
+0488 D2A0            414         setb P2.0
+048A D8DC            415             djnz R0, passo_completo_horario
+048C 22              416         ret
+048D                 417     passo_completo_anti_horario:
+048D B1AF            418         acall delay_step_motor
+048F C2A0            419         clr P2.0
+0491 C2A1            420         clr P2.1
+0493 C2A2            421         clr P2.2
+0495 C2A3            422         clr P2.3
+                     423         ;1000
+0497 B1AF            424         acall delay_step_motor
+0499 C2A3            425         clr P2.3
+049B D2A0            426         setb P2.0
+                     427         ;0100
+049D B1AF            428         acall delay_step_motor
+049F C2A0            429         clr P2.0
+04A1 D2A1            430         setb P2.1
+                     431         ;0010
+04A3 B1AF            432         acall delay_step_motor
+04A5 C2A1            433         clr P2.1
+04A7 D2A2            434         setb P2.2
+                     435         ;0001
+04A9 B1AF            436         acall delay_step_motor
+04AB C2A2            437         clr P2.2
+04AD D2A3            438         setb P2.3
+04AF D8DC            439         djnz R0, passo_completo_anti_horario
+04B1 22              440             ret
+04B2                 441     meio_passo_horario:
+04B2 B1AF            442         acall delay_step_motor
+04B4 C2A0            443         clr P2.0
+04B6 C2A1            444         clr P2.1
+04B8 C2A2            445         clr P2.2
+04BA C2A3            446         clr P2.3
+                     447         ;0001
+04BC B1AF            448         acall delay_step_motor
+04BE D2A3            449         setb P2.3
+                     450         ;0011
+04C0 B1AF            451         acall delay_step_motor
+04C2 D2A2            452         setb P2.2
+                     453         ;0010
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     8
 
-04AB C2A1            454         CLR P2.1
-                     455         ;0011
-04AD B15B            456         acall delay_step_motor
-04AF D2A3            457         SETB P2.3
-                     458         ;0001
-04B1 B15B            459         acall delay_step_motor
-04B3 C2A2            460         CLR P2.2
-                     461         ;1001
-04B5 B15B            462         acall delay_step_motor
-04B7 D2A0            463         SETB P2.0
-04B9 22              464             ret
-                     465     ;##########################################
-                     466     
-04BA 758038          467     inidisp:    mov dado,#38h
-                     468                             ;mov dado,#3ch
-04BD 91F5            469                 CALL comdisp
-04BF B152            470                             call delay2
-04C1 B152            471                             call delay2
-04C3 758038          472                             mov dado,#38h
-                     473                             ;mov dado,#3ch
-04C6 91F5            474                 CALL comdisp
-04C8 B152            475                             call delay2
-04CA B152            476                             call delay2
-04CC 758006          477                             MOV dado,#06h
-04CF 91F5            478                 CALL comdisp
-04D1 B152            479                         call delay2
-04D3 B152            480                             call delay2
-04D5 75800E          481                             MOV dado,#0eh
-04D8 91F5            482                 CALL comdisp
-04DA B152            483                             call delay2
-04DC B152            484                             call delay2
-04DE 758001          485                             MOV dado,#01H
-04E1 91F5            486                             CALL comdisp
-04E3 B152            487                             call delay2
-04E5 B152            488                             call delay2
-04E7 22              489                 RET
-                     490     
-04E8 C2A7            491     dadodisp:   clr  en
-04EA C2A6            492                             clr rw
-04EC D2A5            493                 setb rs
-04EE D2A7            494                 setb en
-04F0 B149            495                 call delay
-04F2 C2A7            496                 clr  en
-04F4 22              497                 ret
-                     498     
-04F5 C2A7            499     comdisp:    clr  en
-04F7 C2A6            500                     clr rw
-04F9 C2A5            501                         clr  rs
-04FB D2A7            502                 setb en
-04FD B149            503                 call delay
-04FF C2A7            504                 clr  en
-0501 22              505                 ret
-                     506     
-0502                 507     msg_aguardando1:
-0502 900900          508                             mov  dptr, #mensagem_aguardando_L1
-0505 7C10            509                 mov r4, #016d
-0507 8029            510                             jmp msg
-0509 22              511                             ret
-                     512                             
-050A                 513     msg_aguardando2:
-050A 900911          514                             mov  dptr, #mensagem_aguardando_L2
-050D 7C10            515                 mov r4, #016d
-050F 8021            516                             jmp msg
-0511 22              517                             ret
-                     518     
-0512                 519     msg_decrem:
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE     9
+04C4 B1AF            454         acall delay_step_motor
+04C6 C2A3            455         CLR P2.3
+                     456         ;0110
+04C8 B1AF            457         acall delay_step_motor
+04CA D2A1            458         SETB P2.1
+                     459         ;0100
+04CC B1AF            460         acall delay_step_motor
+04CE C2A2            461         CLR P2.2
+                     462         ;1100
+04D0 B1AF            463         acall delay_step_motor
+04D2 D2A0            464         SETB P2.0
+                     465         ;1000
+04D4 B1AF            466         acall delay_step_motor
+04D6 C2A1            467         CLR P2.1
+                     468         ;1001
+04D8 B1AF            469         acall delay_step_motor
+04DA D2A3            470         SETB P2.3
+04DC 22              471             ret
+04DD                 472     meio_passo_anti_horario:
+04DD B1AF            473         acall delay_step_motor
+04DF C2A0            474         clr P2.0
+04E1 C2A1            475         clr P2.1
+04E3 C2A2            476         clr P2.2
+04E5 C2A3            477         clr P2.3
+                     478         ;1000
+04E7 B1AF            479         acall delay_step_motor
+04E9 D2A0            480         SETB P2.0
+                     481         ;1100
+04EB B1AF            482         acall delay_step_motor
+04ED D2A1            483         SETB P2.1
+                     484         ;0100
+04EF B1AF            485         acall delay_step_motor
+04F1 C2A0            486         CLR P2.0
+                     487         ;0110
+04F3 B1AF            488         acall delay_step_motor
+04F5 D2A2            489         SETB P2.2
+                     490         ;0010
+04F7 B1AF            491         acall delay_step_motor
+04F9 C2A1            492         CLR P2.1
+                     493         ;0011
+04FB B1AF            494         acall delay_step_motor
+04FD D2A3            495         SETB P2.3
+                     496         ;0001
+04FF B1AF            497         acall delay_step_motor
+0501 C2A2            498         CLR P2.2
+                     499         ;1001
+0503 B1AF            500         acall delay_step_motor
+0505 D2A0            501         SETB P2.0
+0507 22              502             ret
+                     503     ;##########################################
+                     504     
+0508 758038          505     inidisp:    mov dado,#38h
+                     506                             ;mov dado,#3ch
+050B B139            507                 CALL comdisp
+050D B1A6            508                             call delay2
+050F 758038          509                             mov dado,#38h
+                     510                             ;mov dado,#3ch
+0512 B139            511                 CALL comdisp
+0514 B1A6            512                             call delay2
+0516 758006          513                             MOV dado,#06h
+0519 B139            514                 CALL comdisp
+051B B1A6            515                         call delay2
+051D 75800E          516                             MOV dado,#0eh
+0520 B139            517                 CALL comdisp
+0522 B1A6            518                             call delay2
+0524 758001          519                             MOV dado,#01H
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     9
 
-0512 900933          520                             mov  dptr, #mensagem_decrementando
-0515 7C10            521                 mov r4, #016d
-0517 8019            522                             jmp msg
-0519 22              523                             ret
-                     524                             
-051A                 525     msg_inv:
-051A 900922          526                             mov  dptr, #mensagem_invalido
-051D 7C10            527                 mov r4, #016d
-051F 8011            528                             jmp msg
-0521 22              529                             ret
-                     530     
-0522                 531     msg_end:
-0522 900941          532                             mov  dptr, #mensagem_fim
-0525 7C10            533                 mov r4, #016d
-0527 8009            534                             jmp msg
-0529 22              535                             ret
-                     536     
-052A                 537     msg_int:
-052A 90094B          538                             mov  dptr, #mensagem_interrupcao
-052D 7C10            539                 mov r4, #016d
-052F 8001            540                             jmp msg
-0531 22              541                             ret
-                     542     
-0532 E4              543     msg:    clr a
-0533 93              544                     movc  a,@a+dptr
-0534 F580            545                     mov dado,a
-0536 91E8            546                     call dadodisp
-0538 B152            547                     call delay2
-053A A3              548                     inc dptr
-053B E4              549                     clr a
-053C 93              550                     movc  a,@a+dptr
-053D B400F2          551                     cjne a, #00h, msg
-0540 22              552                     ret                             
-                     553     
-0541                 554     troca_para_L2:
-0541 7580C0          555                                 mov dado, #0c0h
-0544 91F5            556                                     aCALL comdisp
-0546 B152            557                                     acall delay2
-0548 22              558                                 ret
-                     559     
-                     560     ;delay_exemplo: SETB ET0
-                     561     ;               MOV TMOD, #01h
-                     562     ;               MOV TH0, #0FFh
-                     563     ;               MOV TL0, #007h
-                     564     ;               SETB EA
-                     565     ;               setb delay1_var
-                     566     ;               SETB TR0
-                     567     ;wait1_exemplo:  jnb delay1_var, wait1
-                     568     ;               ret
-                     569                     
-0549 7E0F            570     delay:      mov r6,#0FH
-054B 7F0F            571     loop:           mov r7, #0FH
-054D DFFE            572                             djnz r7,$
-054F DEFA            573                             djnz r6, loop
-0551 22              574                             ret
-                     575                                
-0552 7EFF            576     delay2:     mov r6,#0FFH
-0554 7FFF            577     loop2:          mov r7, #0FFH
-0556 DFFE            578                             djnz r7,$
-0558 DEFA            579                             djnz r6, loop2
-055A 22              580                             ret
-                     581                             
-055B                 582     delay_step_motor:      
-055B 7E0F            583                             mov r6,#0FH
-055D 7F0F            584     loop3:          mov r7, #0FH
-055F DFFE            585                             djnz r7,$
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE    10
+0527 B139            520                             CALL comdisp
+0529 B1A6            521                             call delay2
+052B 22              522                 RET
+                     523     
+052C C2A7            524     dadodisp:   clr  en
+052E C2A6            525                             clr rw
+0530 D2A5            526                 setb rs
+0532 D2A7            527                 setb en
+0534 B19D            528                 call delay
+0536 C2A7            529                 clr  en
+0538 22              530                 ret
+                     531     
+0539 C2A7            532     comdisp:    clr  en
+053B C2A6            533                     clr rw
+053D C2A5            534                         clr  rs
+053F D2A7            535                 setb en
+0541 B19D            536                 call delay
+0543 C2A7            537                 clr  en
+0545 22              538                 ret
+0546                 539     msg_numero:
+0546 900900          540                             mov  dptr, #mensagem_aguardando_L1
+0549 7C10            541                 mov r4, #016d
+054B 8039            542                             jmp msg
+054D 22              543                             ret
+054E                 544     msg_aguardando1:
+054E 900900          545                             mov  dptr, #mensagem_aguardando_L1
+0551 7C10            546                 mov r4, #016d
+0553 8031            547                             jmp msg
+0555 22              548                             ret
+                     549                             
+                     550     ;msg_aguardando2:;
+                     551     ;                       mov  dptr, #mensagem_aguardando_L2
+                     552      ;           mov r4, #016d
+                     553             ;               jmp msg
+                     554             ;               ret
+                     555                             
+0556                 556     msg_sentido1:
+0556 900911          557                             mov  dptr, #mensagem_sentido1
+0559 7C10            558                 mov r4, #016d
+055B 8029            559                             jmp msg
+055D 22              560                             ret
+                     561                             
+055E                 562     msg_sentido2:
+055E 900920          563                             mov  dptr, #mensagem_sentido2
+0561 7C10            564                 mov r4, #016d
+0563 8021            565                             jmp msg
+0565 22              566                             ret
+                     567     
+0566                 568     msg_decrem:
+0566 90093B          569                             mov  dptr, #mensagem_decrementando
+0569 7C10            570                 mov r4, #016d
+056B 8019            571                             jmp msg
+056D 22              572                             ret
+                     573                             
+056E                 574     msg_inv:
+056E 90092A          575                             mov  dptr, #mensagem_invalido
+0571 7C10            576                 mov r4, #016d
+0573 8011            577                             jmp msg
+0575 22              578                             ret
+                     579     
+0576                 580     msg_end:
+0576 900949          581                             mov  dptr, #mensagem_fim
+0579 7C10            582                 mov r4, #016d
+057B 8009            583                             jmp msg
+057D 22              584                             ret
+                     585     
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    10
 
-0561 DEE8            586                             djnz r6, loop
-0563 22              587                             ret
-                     588                             
-0564                 589     delay1seg:
-0564 7FFA            590             MOV R7, #250d
-0566 7EFA            591             MOV R6, #250d
-0568 7908            592             MOV R1, #8d
-056A                 593             aux_2:
-056A 7EFA            594                     MOV R6, #250d
-056C                 595             aux_1:
-056C 7FFA            596                     MOV R7, #250d
-056E                 597             aux_0:
-056E DFFE            598                     DJNZ R7, aux_0
-0570 DEFA            599                     DJNZ R6, aux_1
-0572 D9F6            600                     DJNZ R1, aux_2
-0574 22              601             ret
-                     602             
-                     603     ;org 0500h
-                     604     ;trata_timer:
-                     605     ;       jnb delay1_var, delay2_inter
-                     606     ;       delay1_inter:   clr ea
-                     607     ;                                       clr delay1_var
-                     608     ;                                       reti
-                     609     ;       delay2_inter:
-                     610     ;                                       jnb delay2_var, end_timer
-                     611     ;                                       clr ea
-                     612     ;                                       clr delay2_var
-                     613     ;                                       reti                    
-                     614     ;       end_timer:
-                     615     ;                       reti
-                     616     
-0900                 617     org 0900h
-                     618     ;Mensagens com amor
-0900 44696769        619     mensagem_aguardando_L1: DB "Digite qtas volt",0
-0904 74652071                
-0908 74617320                
-090C 766F6C74                
+057E                 586     msg_int:
+057E 900953          587                             mov  dptr, #mensagem_interrupcao
+0581 7C10            588                 mov r4, #016d
+0583 8001            589                             jmp msg
+0585 22              590                             ret
+                     591     
+0586 E4              592     msg:    clr a
+0587 93              593                     movc  a,@a+dptr
+0588 F580            594                     mov dado,a
+058A B12C            595                     call dadodisp
+058C B1A6            596                     call delay2
+058E A3              597                     inc dptr
+058F E4              598                     clr a
+0590 93              599                     movc  a,@a+dptr
+0591 B400F2          600                     cjne a, #00h, msg
+0594 22              601                     ret                             
+                     602     
+0595                 603     troca_para_L2:
+0595 7580C0          604                                 mov dado, #0c0h
+0598 B139            605                                     aCALL comdisp
+059A B1A6            606                                     acall delay2
+059C 22              607                                 ret
+                     608     
+                     609     ;delay_exemplo: SETB ET0
+                     610     ;               MOV TMOD, #01h
+                     611     ;               MOV TH0, #0FFh
+                     612     ;               MOV TL0, #007h
+                     613     ;               SETB EA
+                     614     ;               setb delay1_var
+                     615     ;               SETB TR0
+                     616     ;wait1_exemplo:  jnb delay1_var, wait1
+                     617     ;               ret
+                     618                     
+059D 7E0F            619     delay:      mov r6,#0FH
+059F 7F0F            620     loop:           mov r7, #0FH
+05A1 DFFE            621                             djnz r7,$
+05A3 DEFA            622                             djnz r6, loop
+05A5 22              623                             ret
+                     624                                
+05A6 7EFF            625     delay2:     mov r6,#0FFH
+05A8 7FFF            626     loop2:          mov r7, #0FFH
+05AA DFFE            627                             djnz r7,$
+05AC DEFA            628                             djnz r6, loop2
+05AE 22              629                             ret
+                     630                             
+05AF                 631     delay_step_motor:      
+05AF 7FFF            632             MOV R7, #255d
+05B1 7E08            633             MOV R6, #8d
+05B3 7901            634             MOV R1, #1d
+05B5                 635             aux_3:
+05B5 7E08            636                     MOV R6, #8d
+05B7                 637             aux_4:
+05B7 7FFA            638                     MOV R7, #250d
+05B9                 639             aux_5:
+05B9 DFFE            640                     DJNZ R7, aux_5
+05BB DEFA            641                     DJNZ R6, aux_4
+05BD D9F6            642                     DJNZ R1, aux_3
+05BF 22              643                             ret
+                     644                             
+05C0                 645     delay1seg:
+05C0 7FFA            646             MOV R7, #250d
+05C2 7EFA            647             MOV R6, #250d
+05C4 7908            648             MOV R1, #8d
+05C6                 649             aux_2:
+05C6 7EFA            650                     MOV R6, #250d
+05C8                 651             aux_1:
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    11
+
+05C8 7FFA            652                     MOV R7, #250d
+05CA                 653             aux_0:
+05CA DFFE            654                     DJNZ R7, aux_0
+05CC DEFA            655                     DJNZ R6, aux_1
+05CE D9F6            656                     DJNZ R1, aux_2
+05D0 22              657             ret
+                     658             
+                     659     ;org 0500h
+                     660     ;trata_timer:
+                     661     ;       jnb delay1_var, delay2_inter
+                     662     ;       delay1_inter:   clr ea
+                     663     ;                                       clr delay1_var
+                     664     ;                                       reti
+                     665     ;       delay2_inter:
+                     666     ;                                       jnb delay2_var, end_timer
+                     667     ;                                       clr ea
+                     668     ;                                       clr delay2_var
+                     669     ;                                       reti                    
+                     670     ;       end_timer:
+                     671     ;                       reti
+                     672     
+0900                 673     org 0900h
+                     674     ;Mensagens com amor##########################
+0900 44696769        675     mensagem_aguardando_L1: DB "Digite o numero:",0
+0904 7465206F                
+0908 206E756D                
+090C 65726F3A                
 0910 00                      
-0911 61732065        620     mensagem_aguardando_L2: DB "as e o sentido: ",0 
-0915 206F2073                
-0919 656E7469                
-091D 646F3A20                
-0921 00                      
-0922 56616C6F        621     mensagem_invalido: DB "Valor invalido  ",0
-0926 7220696E                
-092A 76616C69                
-092E 646F2020                
-0932 00                      
-0933 20706172        622     mensagem_decrementando: DB " para acabar.",0 ;IE: 255 para acabar.
-0937 61206163                
-093B 61626172                
-093F 2E00                    
-0941 20202020        623     mensagem_FIM: DB "      FIM",0
-0945 20204649                
-0949 4D00                    
-094B 494E5445        624     mensagem_interrupcao: DB "INTERROMPIDO."
-094F 52524F4D                
-0953 5049444F                
-0957 2E                      
-                     625     END
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE    11
+                     676     ;mensagem_aguardando_L2: DB "",0        
+0911 53656E74        677     mensagem_sentido1: DB "Sentido: A=Hor",0
+0915 69646F3A                
+0919 20413D48                
+091D 6F7200                  
+0920 423D416E        678     mensagem_sentido2: DB "B=Ant-Hor",0
+0924 742D486F                
+0928 7200                    
+092A 56616C6F        679     mensagem_invalido: DB "Valor invalido  ",0
+092E 7220696E                
+0932 76616C69                
+0936 646F2020                
+093A 00                      
+093B 20706172        680     mensagem_decrementando: DB " para acabar.",0 ;IE: 255 para acabar.
+093F 61206163                
+0943 61626172                
+0947 2E00                    
+0949 20202020        681     mensagem_FIM: DB "      FIM",0
+094D 20204649                
+0951 4D00                    
+0953 494E5445        682     mensagem_interrupcao: DB "INTERROMPIDO."
+0957 52524F4D                
+095B 5049444F                
+095F 2E                      
+                     683     END
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    12
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -679,125 +740,123 @@ SYMBOL TABLE LISTING
 
 N A M E                      T Y P E  V A L U E   ATTRIBUTES
 
-AUX_0 . . . . . . . . . . .  C ADDR   056EH   A   
-AUX_1 . . . . . . . . . . .  C ADDR   056CH   A   
-AUX_2 . . . . . . . . . . .  C ADDR   056AH   A   
+AUX_0 . . . . . . . . . . .  C ADDR   05CAH   A   
+AUX_1 . . . . . . . . . . .  C ADDR   05C8H   A   
+AUX_2 . . . . . . . . . . .  C ADDR   05C6H   A   
+AUX_3 . . . . . . . . . . .  C ADDR   05B5H   A   
+AUX_4 . . . . . . . . . . .  C ADDR   05B7H   A   
+AUX_5 . . . . . . . . . . .  C ADDR   05B9H   A   
 B . . . . . . . . . . . . .  D ADDR   00F0H   A   
-BOT_0 . . . . . . . . . . .  C ADDR   0317H   A   
-BOT_0_LJMP. . . . . . . . .  C ADDR   0284H   A   
-BOT_1 . . . . . . . . . . .  C ADDR   0322H   A   
-BOT_1_LJMP. . . . . . . . .  C ADDR   028CH   A   
-BOT_2 . . . . . . . . . . .  C ADDR   032DH   A   
-BOT_2_LJMP. . . . . . . . .  C ADDR   0294H   A   
-BOT_3 . . . . . . . . . . .  C ADDR   0338H   A   
-BOT_3_LJMP. . . . . . . . .  C ADDR   029CH   A   
-BOT_4 . . . . . . . . . . .  C ADDR   0343H   A   
-BOT_4_LJMP. . . . . . . . .  C ADDR   02A4H   A   
-BOT_5 . . . . . . . . . . .  C ADDR   034EH   A   
-BOT_5_LJMP. . . . . . . . .  C ADDR   02ACH   A   
-BOT_6 . . . . . . . . . . .  C ADDR   0359H   A   
-BOT_6_LJMP. . . . . . . . .  C ADDR   02B4H   A   
-BOT_7 . . . . . . . . . . .  C ADDR   0364H   A   
-BOT_7_LJMP. . . . . . . . .  C ADDR   02BCH   A   
-BOT_8 . . . . . . . . . . .  C ADDR   036FH   A   
-BOT_8_LJMP. . . . . . . . .  C ADDR   02C4H   A   
-BOT_9 . . . . . . . . . . .  C ADDR   037AH   A   
-BOT_9_LJMP. . . . . . . . .  C ADDR   02CCH   A   
-BOT_A . . . . . . . . . . .  C ADDR   030BH   A   
-BOT_A2. . . . . . . . . . .  C ADDR   03D2H   A   
-BOT_AST . . . . . . . . . .  C ADDR   0308H   A   
-BOT_AST_LJMP. . . . . . . .  C ADDR   02E4H   A   
-BOT_A_JMP . . . . . . . . .  C ADDR   03C2H   A   
-BOT_A_LJMP. . . . . . . . .  C ADDR   0274H   A   
-BOT_B . . . . . . . . . . .  C ADDR   030EH   A   
-BOT_B2. . . . . . . . . . .  C ADDR   03D5H   A   
-BOT_B_JMP . . . . . . . . .  C ADDR   03CAH   A   
-BOT_B_LJMP. . . . . . . . .  C ADDR   027CH   A   
-BOT_C . . . . . . . . . . .  C ADDR   0311H   A   
-BOT_C_LJMP. . . . . . . . .  C ADDR   02D4H   A   
-BOT_D . . . . . . . . . . .  C ADDR   0314H   A   
-BOT_D_LJMP. . . . . . . . .  C ADDR   02DCH   A   
-BOT_HASH. . . . . . . . . .  C ADDR   0385H   A   
-BOT_HASH_LJMP . . . . . . .  C ADDR   02ECH   A   
-CALCULA_VOLTA . . . . . . .  C ADDR   038FH   A   
-CHECK_AST . . . . . . . . .  C ADDR   02F4H   A   
-CHECK_SENT. . . . . . . . .  C ADDR   03A1H   A   
+BOT_0 . . . . . . . . . . .  C ADDR   0315H   A   
+BOT_0_LJMP. . . . . . . . .  C ADDR   0282H   A   
+BOT_1 . . . . . . . . . . .  C ADDR   0325H   A   
+BOT_1_LJMP. . . . . . . . .  C ADDR   028AH   A   
+BOT_2 . . . . . . . . . . .  C ADDR   0335H   A   
+BOT_2_LJMP. . . . . . . . .  C ADDR   0292H   A   
+BOT_3 . . . . . . . . . . .  C ADDR   0345H   A   
+BOT_3_LJMP. . . . . . . . .  C ADDR   029AH   A   
+BOT_4 . . . . . . . . . . .  C ADDR   0355H   A   
+BOT_4_LJMP. . . . . . . . .  C ADDR   02A2H   A   
+BOT_5 . . . . . . . . . . .  C ADDR   0365H   A   
+BOT_5_LJMP. . . . . . . . .  C ADDR   02AAH   A   
+BOT_6 . . . . . . . . . . .  C ADDR   0375H   A   
+BOT_6_LJMP. . . . . . . . .  C ADDR   02B2H   A   
+BOT_7 . . . . . . . . . . .  C ADDR   0385H   A   
+BOT_7_LJMP. . . . . . . . .  C ADDR   02BAH   A   
+BOT_8 . . . . . . . . . . .  C ADDR   0395H   A   
+BOT_8_LJMP. . . . . . . . .  C ADDR   02C2H   A   
+BOT_9 . . . . . . . . . . .  C ADDR   03A5H   A   
+BOT_9_LJMP. . . . . . . . .  C ADDR   02CAH   A   
+BOT_A . . . . . . . . . . .  C ADDR   0309H   A   
+BOT_A2. . . . . . . . . . .  C ADDR   040CH   A   
+BOT_AST . . . . . . . . . .  C ADDR   0306H   A   
+BOT_AST_LJMP. . . . . . . .  C ADDR   02E2H   A   
+BOT_A_JMP . . . . . . . . .  C ADDR   03FCH   A   
+BOT_A_LJMP. . . . . . . . .  C ADDR   0272H   A   
+BOT_B . . . . . . . . . . .  C ADDR   030CH   A   
+BOT_B2. . . . . . . . . . .  C ADDR   040FH   A   
+BOT_B_JMP . . . . . . . . .  C ADDR   0404H   A   
+BOT_B_LJMP. . . . . . . . .  C ADDR   027AH   A   
+BOT_C . . . . . . . . . . .  C ADDR   030FH   A   
+BOT_C_LJMP. . . . . . . . .  C ADDR   02D2H   A   
+BOT_D . . . . . . . . . . .  C ADDR   0312H   A   
+BOT_D_LJMP. . . . . . . . .  C ADDR   02DAH   A   
+BOT_HASH. . . . . . . . . .  C ADDR   03B5H   A   
+BOT_HASH_LJMP . . . . . . .  C ADDR   02EAH   A   
+CALCULA_VOLTA . . . . . . .  C ADDR   03BFH   A   
+CHECK_AST . . . . . . . . .  C ADDR   02F2H   A   
+CHECK_SENT. . . . . . . . .  C ADDR   03DBH   A   
 CHECK_SW1 . . . . . . . . .  C ADDR   0003H   A   
 COL1. . . . . . . . . . . .  B ADDR   00B0H.4 A   
 COL2. . . . . . . . . . . .  B ADDR   00B0H.5 A   
 COL3. . . . . . . . . . . .  B ADDR   00B0H.6 A   
 COL4. . . . . . . . . . . .  B ADDR   00B0H.7 A   
-COMDISP . . . . . . . . . .  C ADDR   04F5H   A   
+COMDISP . . . . . . . . . .  C ADDR   0539H   A   
 DADO. . . . . . . . . . . .  D ADDR   0080H   A   
-DADODISP. . . . . . . . . .  C ADDR   04E8H   A   
-DELAY . . . . . . . . . . .  C ADDR   0549H   A   
-DELAY1SEG . . . . . . . . .  C ADDR   0564H   A   
-DELAY2. . . . . . . . . . .  C ADDR   0552H   A   
-DELAY_STEP_MOTOR. . . . . .  C ADDR   055BH   A   
+DADODISP. . . . . . . . . .  C ADDR   052CH   A   
+DELAY . . . . . . . . . . .  C ADDR   059DH   A   
+DELAY1SEG . . . . . . . . .  C ADDR   05C0H   A   
+DELAY2. . . . . . . . . . .  C ADDR   05A6H   A   
+DELAY_STEP_MOTOR. . . . . .  C ADDR   05AFH   A   
 EN. . . . . . . . . . . . .  B ADDR   00A0H.7 A   
 EX0 . . . . . . . . . . . .  B ADDR   00A8H.0 A   
-IE0 . . . . . . . . . . . .  B ADDR   0088H.1 A   
-IMPRIME_FIM . . . . . . . .  C ADDR   03E8H   A   
-IMPRIME_VOLTAS. . . . . . .  C ADDR   03EFH   A   
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/22/2018 00:50:58 PAGE    12
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    13
 
-INIDISP . . . . . . . . . .  C ADDR   04BAH   A   
-L1_A_CHECK. . . . . . . . .  C ADDR   03AEH   A   
-L1_C_CHECK. . . . . . . . .  C ADDR   0228H   A   
-L2_B_CHECK. . . . . . . . .  C ADDR   03B8H   A   
-L2_C_CHECK. . . . . . . . .  C ADDR   023BH   A   
-L3_C_CHECK. . . . . . . . .  C ADDR   024EH   A   
-L4_AST_CHECK. . . . . . . .  C ADDR   02FEH   A   
-L4_C_CHECK. . . . . . . . .  C ADDR   0261H   A   
+IMPRIME_FIM . . . . . . . .  C ADDR   045FH   A   
+IMPRIME_VOLTAS. . . . . . .  C ADDR   042EH   A   
+INIDISP . . . . . . . . . .  C ADDR   0508H   A   
+L1_A_CHECK. . . . . . . . .  C ADDR   03E8H   A   
+L1_C_CHECK. . . . . . . . .  C ADDR   0226H   A   
+L2_B_CHECK. . . . . . . . .  C ADDR   03F2H   A   
+L2_C_CHECK. . . . . . . . .  C ADDR   0239H   A   
+L3_C_CHECK. . . . . . . . .  C ADDR   024CH   A   
+L4_AST_CHECK. . . . . . . .  C ADDR   02FCH   A   
+L4_C_CHECK. . . . . . . . .  C ADDR   025FH   A   
 LIN1. . . . . . . . . . . .  B ADDR   00B0H.0 A   
 LIN2. . . . . . . . . . . .  B ADDR   00B0H.1 A   
 LIN3. . . . . . . . . . . .  B ADDR   00A0H.4 A   
 LIN4. . . . . . . . . . . .  B ADDR   00B0H.3 A   
-LIN_CHECK . . . . . . . . .  C ADDR   0215H   A   
-LOOP. . . . . . . . . . . .  C ADDR   054BH   A   
-LOOP2 . . . . . . . . . . .  C ADDR   0554H   A   
-LOOP3 . . . . . . . . . . .  C ADDR   055DH   A   
+LIN_CHECK . . . . . . . . .  C ADDR   0213H   A   
+LOOP. . . . . . . . . . . .  C ADDR   059FH   A   
+LOOP2 . . . . . . . . . . .  C ADDR   05A8H   A   
 MAIN. . . . . . . . . . . .  C ADDR   0200H   A   
-MEIO_PASSO_ANTI_HORARIO . .  C ADDR   048FH   A   
-MEIO_PASSO_HORARIO. . . . .  C ADDR   0464H   A   
+MAIN_LJMP . . . . . . . . .  C ADDR   03CCH   A   
+MEIO_PASSO_ANTI_HORARIO . .  C ADDR   04DDH   A   
+MEIO_PASSO_HORARIO. . . . .  C ADDR   04B2H   A   
 MENSAGEM_AGUARDANDO_L1. . .  C ADDR   0900H   A   
-MENSAGEM_AGUARDANDO_L2. . .  C ADDR   0911H   A   
-MENSAGEM_DECREMENTANDO. . .  C ADDR   0933H   A   
-MENSAGEM_FIM. . . . . . . .  C ADDR   0941H   A   
-MENSAGEM_INTERRUPCAO. . . .  C ADDR   094BH   A   
-MENSAGEM_INVALIDO . . . . .  C ADDR   0922H   A   
+MENSAGEM_DECREMENTANDO. . .  C ADDR   093BH   A   
+MENSAGEM_FIM. . . . . . . .  C ADDR   0949H   A   
+MENSAGEM_INTERRUPCAO. . . .  C ADDR   0953H   A   
+MENSAGEM_INVALIDO . . . . .  C ADDR   092AH   A   
+MENSAGEM_SENTIDO1 . . . . .  C ADDR   0911H   A   
+MENSAGEM_SENTIDO2 . . . . .  C ADDR   0920H   A   
 MOTOR1. . . . . . . . . . .  B ADDR   00A0H.0 A   
 MOTOR2. . . . . . . . . . .  B ADDR   00A0H.1 A   
 MOTOR3. . . . . . . . . . .  B ADDR   00A0H.2 A   
 MOTOR4. . . . . . . . . . .  B ADDR   00A0H.3 A   
-MSG . . . . . . . . . . . .  C ADDR   0532H   A   
-MSG_AGUARDANDO1 . . . . . .  C ADDR   0502H   A   
-MSG_AGUARDANDO2 . . . . . .  C ADDR   050AH   A   
-MSG_DECREM. . . . . . . . .  C ADDR   0512H   A   
-MSG_END . . . . . . . . . .  C ADDR   0522H   A   
-MSG_INT . . . . . . . . . .  C ADDR   052AH   A   
-MSG_INV . . . . . . . . . .  C ADDR   051AH   A   
+MSG . . . . . . . . . . . .  C ADDR   0586H   A   
+MSG_AGUARDANDO1 . . . . . .  C ADDR   054EH   A   
+MSG_DECREM. . . . . . . . .  C ADDR   0566H   A   
+MSG_END . . . . . . . . . .  C ADDR   0576H   A   
+MSG_INT . . . . . . . . . .  C ADDR   057EH   A   
+MSG_INV . . . . . . . . . .  C ADDR   056EH   A   
+MSG_NUMERO. . . . . . . . .  C ADDR   0546H   A   
+MSG_SENTIDO1. . . . . . . .  C ADDR   0556H   A   
+MSG_SENTIDO2. . . . . . . .  C ADDR   055EH   A   
 P0. . . . . . . . . . . . .  D ADDR   0080H   A   
 P2. . . . . . . . . . . . .  D ADDR   00A0H   A   
 P3. . . . . . . . . . . . .  D ADDR   00B0H   A   
-PASSO_COMPLETO_ANTI_HORARIO  C ADDR   0441H   A   
-PASSO_COMPLETO_HORARIO. . .  C ADDR   041EH   A   
+PASSO_COMPLETO_ANTI_HORARIO  C ADDR   048DH   A   
+PASSO_COMPLETO_HORARIO. . .  C ADDR   0468H   A   
+PRINTA_SENT . . . . . . . .  C ADDR   03D3H   A   
 RS. . . . . . . . . . . . .  B ADDR   00A0H.5 A   
 RW. . . . . . . . . . . . .  B ADDR   00A0H.6 A   
-SENTIDO_ANTI_HORARIO. . . .  C ADDR   03E0H   A   
-SENTIDO_HORARIO . . . . . .  C ADDR   03D8H   A   
+SENTIDO_ANTI_HORARIO. . . .  C ADDR   0420H   A   
+SENTIDO_HORARIO . . . . . .  C ADDR   0412H   A   
 SW1 . . . . . . . . . . . .  B ADDR   00B0H.2 A   
 TEMP. . . . . . . . . . . .  N NUMB   0500H   A   
-TROCA_PARA_L2 . . . . . . .  C ADDR   0541H   A   
+TROCA_PARA_L2 . . . . . . .  C ADDR   0595H   A   
 VAR1. . . . . . . . . . . .  N NUMB   007FH   A   
-VAR2. . . . . . . . . . . .  N NUMB   007EH   A   
-VAR3. . . . . . . . . . . .  N NUMB   007DH   A   
-VAR4. . . . . . . . . . . .  N NUMB   007CH   A   
-VAR5. . . . . . . . . . . .  N NUMB   007BH   A   
-VAR6. . . . . . . . . . . .  N NUMB   007AH   A   
-VAR7. . . . . . . . . . . .  N NUMB   0079H   A   
-VAR8. . . . . . . . . . . .  N NUMB   0078H   A   
-VAR9. . . . . . . . . . . .  N NUMB   0077H   A   
 
 
 REGISTER BANK(S) USED: 0 

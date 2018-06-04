@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     1
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
   007F                55     var1    EQU             07FH
                       56     ;-------------MAIN---------------
 0200                  57     org 0200h
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     2
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     2
 
 0200                  58     main:
 0200 B108             59     acall inidisp
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
 028A                 121     bot_1_Ljmp:
 028A B1A6            122         acall delay2
 028C 30B4FB          123             jnb col1, bot_1_Ljmp
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     3
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     3
 
 028F 020325          124             ljmp bot_1      
 0292                 125     bot_2_Ljmp:
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
 030F 020213          187     bot_C: ljmp lin_check
 0312 020213          188     bot_D: ljmp lin_check
 0315                 189     bot_0:  
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     4
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     4
 
 0315 ED              190             mov A, R5
 0316 75F00A          191             mov B, #10d
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
 0385 ED              253             mov A, R5
 0386 75F00A          254             mov B, #10d
 0389 A4              255             mul AB
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     5
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     5
 
 038A 2407            256             add A, #7d
 038C FD              257             mov R5,A
@@ -337,7 +337,7 @@ LOC  OBJ            LINE     SOURCE
 03FE 30B7FB          319             jnb col4, bot_A_jmp
 0401 02040C          320             ljmp bot_A2
 0404                 321     bot_B_jmp:
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     6
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     6
 
 0404 B1A6            322         acall delay2
 0406 30B7FB          323             jnb col4, bot_B_jmp
@@ -350,7 +350,7 @@ LOC  OBJ            LINE     SOURCE
 0412 B108            330             acall inidisp    
 0414 912E            331             acall imprime_voltas
 0416 B166            332             acall msg_decrem
-0418 785F            333             mov R0,#95d
+0418 782F            333             mov R0,#47d
 041A 9168            334             acall passo_completo_horario
 041C DDF4            335             djnz R5, sentido_horario
 041E 803F            336             jmp imprime_fim
@@ -358,7 +358,7 @@ LOC  OBJ            LINE     SOURCE
 0420 B108            338             acall inidisp
 0422 912E            339             acall imprime_voltas
 0424 B166            340             acall msg_decrem
-0426 785F            341             mov R0,#95d
+0426 782F            341             mov R0,#47d
 0428 918D            342             acall passo_completo_anti_horario
 042A DDF4            343             djnz R5, sentido_anti_horario
 042C 8031            344             jmp imprime_fim
@@ -405,7 +405,7 @@ LOC  OBJ            LINE     SOURCE
                      385             
 045F                 386     imprime_fim:
 045F B108            387             acall inidisp
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     7
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     7
 
 0461 B176            388             acall msg_end
 0463 B1C0            389             acall delay1seg
@@ -473,7 +473,7 @@ LOC  OBJ            LINE     SOURCE
 04C0 B1AF            451         acall delay_step_motor
 04C2 D2A2            452         setb P2.2
                      453         ;0010
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     8
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     8
 
 04C4 B1AF            454         acall delay_step_motor
 04C6 C2A3            455         CLR P2.3
@@ -541,7 +541,7 @@ LOC  OBJ            LINE     SOURCE
 0520 B139            517                 CALL comdisp
 0522 B1A6            518                             call delay2
 0524 758001          519                             MOV dado,#01H
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE     9
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE     9
 
 0527 B139            520                             CALL comdisp
 0529 B1A6            521                             call delay2
@@ -609,7 +609,7 @@ LOC  OBJ            LINE     SOURCE
 057B 8009            583                             jmp msg
 057D 22              584                             ret
                      585     
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    10
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE    10
 
 057E                 586     msg_int:
 057E 900953          587                             mov  dptr, #mensagem_interrupcao
@@ -658,10 +658,10 @@ LOC  OBJ            LINE     SOURCE
                      630                             
 05AF                 631     delay_step_motor:      
 05AF 7FFF            632             MOV R7, #255d
-05B1 7E08            633             MOV R6, #8d
+05B1 7E50            633             MOV R6, #80d
 05B3 7901            634             MOV R1, #1d
 05B5                 635             aux_3:
-05B5 7E08            636                     MOV R6, #8d
+05B5 7E50            636                     MOV R6, #80d
 05B7                 637             aux_4:
 05B7 7FFA            638                     MOV R7, #250d
 05B9                 639             aux_5:
@@ -677,7 +677,7 @@ LOC  OBJ            LINE     SOURCE
 05C6                 649             aux_2:
 05C6 7EFA            650                     MOV R6, #250d
 05C8                 651             aux_1:
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    11
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE    11
 
 05C8 7FFA            652                     MOV R7, #250d
 05CA                 653             aux_0:
@@ -732,7 +732,7 @@ LOC  OBJ            LINE     SOURCE
 095B 5049444F                
 095F 2E                      
                      683     END
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    12
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE    12
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -800,7 +800,7 @@ DELAY2. . . . . . . . . . .  C ADDR   05A6H   A
 DELAY_STEP_MOTOR. . . . . .  C ADDR   05AFH   A   
 EN. . . . . . . . . . . . .  B ADDR   00A0H.7 A   
 EX0 . . . . . . . . . . . .  B ADDR   00A8H.0 A   
-A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 00:59:59 PAGE    13
+A51 MACRO ASSEMBLER  PROJETO1                                                             05/23/2018 08:59:50 PAGE    13
 
 IMPRIME_FIM . . . . . . . .  C ADDR   045FH   A   
 IMPRIME_VOLTAS. . . . . . .  C ADDR   042EH   A   
